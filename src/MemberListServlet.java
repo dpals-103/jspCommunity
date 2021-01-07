@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class HomeServlet
  */
-@WebServlet("/usr/member/list")
+@WebServlet("/usr/member/memberList")
 public class MemberListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -29,7 +29,7 @@ public class MemberListServlet extends HttpServlet {
 		MysqlUtil.closeConnection();
 
 		req.setAttribute("memberMapList", memberMapList);
-		req.getRequestDispatcher("/jsp/usr/member/list.jsp").forward(req, resp);
+		req.getRequestDispatcher("/jsp/usr/member/memberList.jsp").forward(req, resp);
 	}
 
 }
