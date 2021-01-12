@@ -10,26 +10,29 @@
 	int boardId = (int)request.getAttribute("boardId");
 	int id = (int)request.getAttribute("id");
 	Board board = (Board)request.getAttribute("board"); 
+	Article article = (Article)request.getAttribute("article"); 
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>게시글 작성하기</title>
+<title>게시글 수정하기</title>
 </head>
 <body>
 	
-	<h1><%=board.category%> 글 작성하기</h1>
+	<h1>글 수정하기</h1>
 	<hr>
 	
 	<div>
-	<form action="/jspCommunity/usr/article/doWrite" methods="POST" target="_blank">
+	<form action="/jspCommunity/usr/article/doModify" methods="POST" target="_blank">
 		<input type="hidden" name="boardId" value="<%=boardId%>" />
+		<input type="hidden" name="id" value="<%=id%>" />
 		<input type="hidden" name="memberId" value="<%=memberId%>" />
 		<hr>
-		<input type="text" name="title" placeholder="제목을 입력하세요" maxlength="30"/>
+		<input type="text" name="title" value=<%=article.title%> maxlength="30"/>
 		<hr>
-		<textarea name="body" placeholder="내용을 입력해주세요" maxlength="1500"></textarea>
+		<textarea name="body" maxlength="1500"><%=article.body%></textarea>
 		<hr>
 		<input type="submit" value="전송"/>
 		<button type="button" onclick="history.back();"/>뒤로가기</button>	

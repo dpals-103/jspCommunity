@@ -42,7 +42,7 @@ public class ArticleDao {
 	}
 
 	public Article getArticle(int id) {
-		
+
 		SecSql sql = new SecSql();
 
 		sql.append("select A.*");
@@ -54,24 +54,24 @@ public class ArticleDao {
 		sql.append("on A.memberId = M.id");
 		sql.append("inner join board as B");
 		sql.append("on A.boardId = B.id");
-		
+
 		if (id != 0) {
 			sql.append("where A.id=?", id);
 		}
-		
+
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
-		
-		if(map.isEmpty()) {
-			return null; 
+
+		if (map.isEmpty()) {
+			return null;
 		}
-		
+
 		return new Article(map);
 	}
 
 	public Board getBoard(int boardId) {
-		
+
 		SecSql sql = new SecSql();
-		
+
 		sql.append("select * from board where id = ?", boardId);
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
@@ -81,13 +81,13 @@ public class ArticleDao {
 		}
 
 		return new Board(map);
-		
+
 	}
 
 	public int write(int memberId, int boardId, String title, String body) {
-		
+
 		SecSql sql = new SecSql();
-		
+
 		sql.append("INSERT INTO article");
 		sql.append("SET boardId=?", boardId);
 		sql.append(",title=?", title);
@@ -95,10 +95,42 @@ public class ArticleDao {
 		sql.append(",memberId=?", memberId);
 		sql.append(",regDate=now()");
 		sql.append(",updateDate=now()");
+
+		int articleId = MysqlUtil.insert(sql);
+
+		return articleId;
+	}
+
+	public int modify(int memberId, int boardId, int id, String title, String body) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("update article");
+		sql.append("set title=?", title);
+		sql.append(",body=?", body);
+		sql.append(",updateDate=now()");
+		sql.append("where memberId=?", memberId);
+		sql.append("and boardId=?", boardId);
+		sql.append("and id=?", id);
+
+		int m = MysqlUtil.update(sql);
 		
-		int articleId = MysqlUtil.insert(sql); 
+		return m; 
+
+	}
+
+	public int delete(int memberId, int boardId, int id) {
 		
-		return articleId; 
+		SecSql sql = new SecSql();
+
+		sql.append("delete from article");
+		sql.append("where memberId=?", memberId);
+		sql.append("and boardId=?", boardId);
+		sql.append("and id=?", id);
+
+		int d = MysqlUtil.delete(sql);
+		
+		return d; 
 	}
 
 }
