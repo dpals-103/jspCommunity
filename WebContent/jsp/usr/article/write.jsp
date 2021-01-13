@@ -19,7 +19,7 @@
 </head>
 <body>
 	
-	<h1><%=board.category%> 글 작성하기</h1>
+	<h1><%=board.getCategory()%> 글 작성하기</h1>
 	<hr>
 	
 	<div>

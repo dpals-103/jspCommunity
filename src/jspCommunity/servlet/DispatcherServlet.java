@@ -36,8 +36,8 @@ public class DispatcherServlet extends HttpServlet {
 		String controllerName = requestUriBits[3];
 		String actionMethodsName = requestUriBits[4];
 
-		MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
-		// MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+		//MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
+		MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
 
 		String jspPath = null;
 

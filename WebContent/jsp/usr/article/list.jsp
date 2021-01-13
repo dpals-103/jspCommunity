@@ -19,11 +19,13 @@
 <body>
 
 	<div>
-	<h1><%=board.category%> 게시판</h1>
+		<h1><%=board.getId()%>
+			게시판
+		</h1>
 	</div>
-	
+
 	<div>
-	<a href="write?boardId=<%=boardId%>">글쓰기</a>
+		<a href="write?boardId=<%=boardId%>">글쓰기</a>
 	</div>
 	<%
 		for (Article article : articles) {
@@ -31,15 +33,11 @@
 	<div>
 
 		게시판 :
-		<%=article.extra__category%><br> 
-		번호 :
-		<%=article.id%><br> 
-		작성자 :
-		<%=article.extra__writer%><br> 
-		제목 :
-		<%=article.title%><br> 
-		작성일 :
-		<%=article.regDate%><br>
+		<%=article.getExtra__category()%><br> 번호 :
+		<%=article.getId()%><br> 작성자 :
+		<%=article.getExtra__writer()%><br> 제목 :
+		<%=article.getTitle()%><br> 작성일 :
+		<%=article.getRegDate()%><br>
 		<hr>
 
 	</div>

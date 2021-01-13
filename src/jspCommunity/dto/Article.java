@@ -4,18 +4,18 @@ import java.util.Map;
 
 public class Article {
 
-	public int id;
-	public int boardId;
-	public String boardCode;
-	public String title;
-	public String body;
-	public int memberId;
-	public int count;
-	public String regDate;
-	public String updateDate;
-	public String extra__writer;
-	public String extra__category;
-	public String extra__boardCode;
+	private int id;
+	private int boardId;
+	private String boardCode;
+	private String title;
+	private String body;
+	private int memberId;
+	private int count;
+	private String regDate;
+	private String updateDate;
+	private String extra__writer;
+	private String extra__category;
+	private String extra__boardCode;
 
 	public Article(Map<String, Object> map) {
 		this.id = (int) map.get("id");
@@ -35,14 +35,107 @@ public class Article {
 		if (map.containsKey("extra__category")) {
 			this.extra__category = (String) map.get("extra__category");
 		}
-		
+
 		if (map.containsKey("extra__boardCode")) {
 			this.extra__category = (String) map.get("extra__boardCode");
 		}
-		
-		
-		
 
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getBoardId() {
+		return boardId;
+	}
+
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
+	}
+
+	public String getBoardCode() {
+		return boardCode;
+	}
+
+	public void setBoardCode(String boardCode) {
+		this.boardCode = boardCode;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public int getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(int memberId) {
+		this.memberId = memberId;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
+	public String getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public String getExtra__writer() {
+		return extra__writer;
+	}
+
+	public void setExtra__writer(String extra__writer) {
+		this.extra__writer = extra__writer;
+	}
+
+	public String getExtra__category() {
+		return extra__category;
+	}
+
+	public void setExtra__category(String extra__category) {
+		this.extra__category = extra__category;
+	}
+
+	public String getExtra__boardCode() {
+		return extra__boardCode;
+	}
+
+	public void setExtra__boardCode(String extra__boardCode) {
+		this.extra__boardCode = extra__boardCode;
 	}
 
 	@Override

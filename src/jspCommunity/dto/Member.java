@@ -4,14 +4,14 @@ import java.util.Map;
 
 public class Member {
 	
-	public int id;
-	public String loginId;
-	public String loginPw;
-	public String name;
-	public String nickName;
-	public String email;
-	public String regDate;
-	public int adminLevel; 
+	private int id;
+	private String loginId;
+	private String loginPw;
+	private String name;
+	private String nickName;
+	private String email;
+	private String regDate;
+	private int adminLevel; 
 
 	public Member(Map<String, Object> map) {
 		this.id = (int)map.get("id");
@@ -23,6 +23,8 @@ public class Member {
 		this.regDate = (String)map.get("regDate");
 		this.adminLevel = (int)map.get("adminLevel");
 	}
+
+
 
 	@Override
 	public String toString() {

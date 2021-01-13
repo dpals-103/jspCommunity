@@ -30,9 +30,9 @@
 		<input type="hidden" name="id" value="<%=id%>" />
 		<input type="hidden" name="memberId" value="<%=memberId%>" />
 		<hr>
-		<input type="text" name="title" value=<%=article.title%> maxlength="30"/>
+		<input type="text" name="title" value=<%=article.getTitle()%> maxlength="30"/>
 		<hr>
-		<textarea name="body" maxlength="1500"><%=article.body%></textarea>
+		<textarea name="body" maxlength="1500"><%=article.getBody()%></textarea>
 		<hr>
 		<input type="submit" value="전송"/>
 		<button type="button" onclick="history.back();"/>뒤로가기</button>	

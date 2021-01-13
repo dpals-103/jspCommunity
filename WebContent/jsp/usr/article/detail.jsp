@@ -16,29 +16,29 @@
 </head>
 <body>
 
-	<h1><%=board.category%>게시판</h1>
-	<h1><%=article.id %>번글 상세보기</h1>
+	<h1><%=board.getCategory()%>게시판</h1>
+	<h1><%=article.getId() %>번글 상세보기</h1>
 
 	<div>
 		번호 :
-		<%=article.id%><br> 
+		<%=article.getId()%><br> 
 		작성자 :
-		<%=article.extra__writer%><br>
+		<%=article.getExtra__writer()%><br>
 		제목 :
-		<%=article.title%><br> 
+		<%=article.getTitle()%><br> 
 		내용 :
-		<%=article.body%><br> 
+		<%=article.getBody()%><br> 
 		작성일 :
-		<%=article.regDate%><br>
+		<%=article.getRegDate()%><br>
 		<hr>
 	</div>
 	<div>
 		<a href="list?boardId=<%=boardId%>">리스트로 돌아가기</a>
 	</div>
 	<div>
-		<a href="modify?boardId=<%=boardId%>&id=<%=article.id%>">수정하기</a>
+		<a href="modify?boardId=<%=boardId%>&id=<%=article.getId()%>">수정하기</a>
 	</div>
-	<form action="/jspCommunity/usr/article/doDelete?boardId=<%=boardId%>&id=<%=article.id%>" methods="POST" target="_blank">
+	<form action="/jspCommunity/usr/article/doDelete?boardId=<%=boardId%>&id=<%=article.getId()%>" methods="POST" target="_blank">
 		<input type="submit" value="삭제하기" />
 	</form>
 </body>
