@@ -10,14 +10,11 @@
 	int boardId = (int)request.getAttribute("boardId");
 	int id = (int)request.getAttribute("id");
 	Board board = (Board)request.getAttribute("board"); 
+	String pageTitle = "게시물 작성하기";
 %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>게시글 작성하기</title>
-</head>
-<body>
+
+<%@ include file="../../part/head.jspf" %>
+
 	
 	<h1><%=board.getCategory()%> 글 작성하기</h1>
 	<hr>
@@ -36,5 +33,4 @@
 	</form>
 	</div>
 	
-</body>
-</html>
+<%@ include file="../../part/foot.jspf" %>

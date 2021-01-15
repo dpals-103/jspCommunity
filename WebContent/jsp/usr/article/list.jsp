@@ -9,18 +9,14 @@
 	List<Article> articles = (List<Article>) request.getAttribute("articles");
 	int boardId = (int) request.getAttribute("boardId");
 	Board board = (Board) request.getAttribute("board");
+	String pageTitle = board.getCategory() + "게시판 리스트";
 %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>게시글 리스트</title>
-</head>
-<body>
+
+<%@ include file="../../part/head.jspf" %>
+
 
 	<div>
-		<h1><%=board.getId()%>
-			게시판
+		<h1><%=pageTitle%>
 		</h1>
 	</div>
 
@@ -33,10 +29,14 @@
 	<div>
 
 		게시판 :
-		<%=article.getExtra__category()%><br> 번호 :
-		<%=article.getId()%><br> 작성자 :
-		<%=article.getExtra__writer()%><br> 제목 :
-		<%=article.getTitle()%><br> 작성일 :
+		<%=article.getExtra__category()%><br> 
+		번호 :
+		<%=article.getId()%><br> 
+		작성자 :
+		<%=article.getExtra__writer()%><br> 
+		제목 :
+		<%=article.getTitle()%><br> 
+		작성일 :
 		<%=article.getRegDate()%><br>
 		<hr>
 
@@ -44,5 +44,5 @@
 	<%
 		}
 	%>
-</body>
-</html>
+	
+<%@ include file="../../part/foot.jspf" %>

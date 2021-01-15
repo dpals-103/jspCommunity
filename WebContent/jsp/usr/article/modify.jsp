@@ -11,16 +11,12 @@
 	int id = (int)request.getAttribute("id");
 	Board board = (Board)request.getAttribute("board"); 
 	Article article = (Article)request.getAttribute("article"); 
+	String pageTitle = "게시물 수정하기";
 	
 %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>게시글 수정하기</title>
-</head>
-<body>
-	
+
+<%@ include file="../../part/head.jspf" %>
+
 	<h1>글 수정하기</h1>
 	<hr>
 	
@@ -39,5 +35,4 @@
 	</form>
 	</div>
 	
-</body>
-</html>
+<%@ include file="../../part/foot.jspf" %>

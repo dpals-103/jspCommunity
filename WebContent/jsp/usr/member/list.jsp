@@ -6,15 +6,11 @@
 <%
 	List<Map<String, Object>> memberMapList = 
 	(List<Map<String, Object>>) request.getAttribute("memberMapList");
+ 	String pageTitle = "회원리스트";
 %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>회원 리스트</title>
-</head>
-<body>
+<%@ include file="../../part/head.jspf" %>
+
 	<h1>회원리스트</h1>
 	<%
 	for(Map<String, Object> memberMap : memberMapList){
@@ -27,5 +23,5 @@
 	<%
 	}
 	%>
-</body>
-</html>
+	
+<%@ include file="../../part/foot.jspf" %>
