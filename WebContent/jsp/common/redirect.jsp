@@ -3,19 +3,19 @@
 
 
 <script>
-var alertMsg ='<%=request.getAttribute("alertMsg")%>'.trim();
+var alertMsg ='${alertMsg}'.trim();
 
 if(alertMsg){
 	alert(alertMsg); 
 }
 
-var historyBack ='<%=request.getAttribute("historyBack")%>' == 'true'; 
+var historyBack ='${historyBack}' == 'true'; 
 
 if(historyBack){
 	history.back(); 
 }
 
-var replaceUrl = '<%=request.getAttribute("replaceUrl")%>'.trim();
+var replaceUrl = '${replaceUrl}'.trim();
 
 	if (replaceUrl) {
 		location.replace(replaceUrl);

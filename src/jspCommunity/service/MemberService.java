@@ -20,4 +20,12 @@ public class MemberService {
 	public static Member getMember(int memberId) {
 		return memberDao.getMember(memberId);
 	}
+
+	public String getMemberByLoginId(String loginId) {
+		return memberDao.getMemberByLoginId(loginId); 
+	}
+
+	public int join(String loginId, String loginPw, String name, String nickName, String email) {
+		return memberDao.join( loginId,  loginPw,  name,  nickName,  email);
+	}
 }

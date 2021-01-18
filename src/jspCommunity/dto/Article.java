@@ -2,6 +2,9 @@ package jspCommunity.dto;
 
 import java.util.Map;
 
+import lombok.Data;
+
+@Data
 public class Article {
 
 	private int id;
@@ -42,108 +45,5 @@ public class Article {
 
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public int getBoardId() {
-		return boardId;
-	}
-
-	public void setBoardId(int boardId) {
-		this.boardId = boardId;
-	}
-
-	public String getBoardCode() {
-		return boardCode;
-	}
-
-	public void setBoardCode(String boardCode) {
-		this.boardCode = boardCode;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
-	}
-
-	public int getMemberId() {
-		return memberId;
-	}
-
-	public void setMemberId(int memberId) {
-		this.memberId = memberId;
-	}
-
-	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
-	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-	public String getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(String updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public String getExtra__writer() {
-		return extra__writer;
-	}
-
-	public void setExtra__writer(String extra__writer) {
-		this.extra__writer = extra__writer;
-	}
-
-	public String getExtra__category() {
-		return extra__category;
-	}
-
-	public void setExtra__category(String extra__category) {
-		this.extra__category = extra__category;
-	}
-
-	public String getExtra__boardCode() {
-		return extra__boardCode;
-	}
-
-	public void setExtra__boardCode(String extra__boardCode) {
-		this.extra__boardCode = extra__boardCode;
-	}
-
-	@Override
-	public String toString() {
-		return "Article [id=" + id + ", boardId=" + boardId + ", boardCode=" + boardCode + ", title=" + title
-				+ ", body=" + body + ", memberId=" + memberId + ", count=" + count + ", regDate=" + regDate
-				+ ", updateDate=" + updateDate + ", extra__writer=" + extra__writer + ", extra__category="
-				+ extra__category + ", extra__boardCode=" + extra__boardCode + "]";
-	}
 
 }

@@ -12,10 +12,10 @@ import jspCommunity.dto.Member;
 import jspCommunity.service.ArticleService;
 import jspCommunity.service.MemberService;
 
-public class ArticleController {
+public class UsrArticleController {
 	private ArticleService articleService;
 
-	public ArticleController() {
+	public UsrArticleController() {
 		articleService = Container.articleService;
 	}
 
@@ -107,14 +107,7 @@ public class ArticleController {
 		String body = req.getParameter("body");
 
 		int aritlceId = articleService.write(memberId, boardId, title, body);
-		Article article = articleService.getArticle(aritlceId);
-
-		req.setAttribute("article", article);
-		req.setAttribute("memberId", memberId);
-		req.setAttribute("boardId", boardId);
-		req.setAttribute("title", title);
-		req.setAttribute("body", body);
-
+		
 		req.setAttribute("alertMsg", "작성되었습니다");
 		req.setAttribute("replaceUrl", String.format("detail?id=%d&boardId=%d", aritlceId, boardId));
 

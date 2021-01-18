@@ -2,6 +2,9 @@ package jspCommunity.dto;
 
 import java.util.Map;
 
+import lombok.Data;
+
+@Data
 public class Member {
 	
 	private int id;
@@ -22,14 +25,6 @@ public class Member {
 		this.email = (String)map.get("email");
 		this.regDate = (String)map.get("regDate");
 		this.adminLevel = (int)map.get("adminLevel");
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "Member [id=" + id + ", loginId=" + loginId + ", loginPw=" + loginPw + ", name=" + name + ", nickName="
-				+ nickName + ", email=" + email + ", regDate=" + regDate + ", adminLevel=" + adminLevel + "]";
 	}
 
 }

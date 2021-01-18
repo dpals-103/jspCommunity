@@ -1,48 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Map"%>
-<%@ page import="jspCommunity.dto.Article"%>
-<%@ page import="jspCommunity.dto.Board"%>
 
-<%
-	List<Article> articles = (List<Article>) request.getAttribute("articles");
-	int boardId = (int) request.getAttribute("boardId");
-	Board board = (Board) request.getAttribute("board");
-	String pageTitle = board.getCategory() + "게시판 리스트";
-%>
+
+
+<c:set var="pageTitle" value= "${board.category} 게시판 리스트"/>
 
 <%@ include file="../../part/head.jspf" %>
 
 
 	<div>
-		<h1><%=pageTitle%>
-		</h1>
+		<h1>${pageTitle}</h1>
 	</div>
 
 	<div>
-		<a href="write?boardId=<%=boardId%>">글쓰기</a>
+		<a href="write?boardId=${param.boardId}">글쓰기</a>
 	</div>
-	<%
-		for (Article article : articles) {
-	%>
+	<c:forEach items="${articles}" var="article">
 	<div>
 
 		게시판 :
-		<%=article.getExtra__category()%><br> 
+		${article.extra__category}<br> 
 		번호 :
-		<%=article.getId()%><br> 
+		${article.id}<br> 
 		작성자 :
-		<%=article.getExtra__writer()%><br> 
+		${article.extra__writer}<br> 
 		제목 :
-		<%=article.getTitle()%><br> 
+		${article.title}<br> 
 		작성일 :
-		<%=article.getRegDate()%><br>
+		${article.regDate}<br>
 		<hr>
 
 	</div>
-	<%
-		}
-	%>
+	</c:forEach>
 	
 <%@ include file="../../part/foot.jspf" %>

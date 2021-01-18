@@ -44,4 +44,35 @@ public class MemberDao {
 
 		return new Member(map);
 	}
+
+	public String getMemberByLoginId(String loginId) {
+		SecSql sql = new SecSql();
+
+		sql.append("select loginId from member where loginId = ?", loginId);
+		String joinedId = MysqlUtil.selectRowStringValue(sql);
+
+		if (joinedId.isBlank()) {
+			return null;
+		} else if (joinedId.equals(loginId)) {
+			return joinedId;
+		}
+		return null;
+	}
+
+	public int join(String loginId, String loginPw, String name, String nickName, String email) {
+		
+		SecSql sql = new SecSql();
+
+		sql.append("INSERT INTO member set");
+		sql.append("loginId=?", loginId);
+		sql.append(",loginPw=?", loginPw);
+		sql.append(",name=?", name);
+		sql.append(",nickName=?", nickName);
+		sql.append(",email=?", email);
+		sql.append(",regDate=now();");
+		
+		int memberId= MysqlUtil.insert(sql);
+		
+		return memberId; 
+	}
 }
