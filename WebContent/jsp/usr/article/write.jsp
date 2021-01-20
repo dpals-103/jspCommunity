@@ -13,7 +13,7 @@
 	<hr>
 	
 	<div>
-	<form action="/jspCommunity/usr/article/doWrite" methods="POST" target="_blank">
+	<form action="/jspCommunity/usr/article/doWrite" methods="POST">
 		<input type="hidden" name="boardId" value="${param.boardId}" />
 		<input type="hidden" name="memberId" value="${param.memberId}" />
 		<hr>

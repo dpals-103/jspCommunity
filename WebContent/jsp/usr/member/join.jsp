@@ -106,7 +106,7 @@
 	
 	
 	
-	<form action="/jspCommunity/usr/member/doJoin" methods="POST" onsubmit="submitFormDoJoin(this); return false;">
+	<form action="/jspCommunity/usr/member/doJoin" methods="POST" onsubmit="DoJoinForm__submit(this); return false;">
 		<div>아이디</div>
 	    <input type="text" name="loginId" placeholder="아이디를 입력하세요" maxlength="50"/>
 	    <!-- <input type="submit" value="중복체크"/> -->

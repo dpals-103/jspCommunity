@@ -15,7 +15,7 @@
 		</c:if>
 
 		<c:if test="${sessionScope.loginedMemberId > 0}">
-			<a href="../member/logOut">로그아웃</a>
+			<a href="../member/logout">로그아웃</a>
 		</c:if>
 		<a href="../home/main">메인으로</a>
 

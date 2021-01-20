@@ -16,21 +16,20 @@
 	</div>
 
 	<div>
-		<c:if test="${session.loginedMemberId > 0}">
-		<a href="write?boardId=${param.boardId}&memberId=${session.loginedMemberId}">글쓰기</a>
+		<c:if test="${sessionScope.loginedMemberId > 0}">
+		<a href="write?boardId=${param.boardId}&memberId=${sessionScope.loginedMemberId}">글쓰기</a>
+		<hr>
 		</c:if>
 	</div>
 	<c:forEach items="${articles}" var="article">
 	<div>
 
-		게시판 :
-		${article.extra__category}<br> 
 		번호 :
 		${article.id}<br> 
+		제목 :
+		<a href="detail?boardId=${board.id}&id=${article.id}">${article.title}</a><br> 
 		작성자 :
 		${article.extra__writer}<br> 
-		제목 :
-		${article.title}<br> 
 		작성일 :
 		${article.regDate}<br>
 		<hr>

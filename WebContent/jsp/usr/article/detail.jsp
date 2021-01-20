@@ -8,7 +8,7 @@
 <%@ include file="../../part/head.jspf" %>
 
 
-	<h1>${board.categoty} 게시판</h1>
+	<h1>${board.category} 게시판</h1>
 	<h1>${article.id}번글 상세보기</h1>
 
 	<div>
@@ -27,11 +27,18 @@
 	<div>
 		<a href="list?boardId=${article.boardId}">리스트로 돌아가기</a>
 	</div>
+
+	
+	<c:if test="${sessionScope.loginedMemberId == article.memberId }">
+	
 	<div>
-		<a href="modify?boardId=${article.boardId}&id=${article.id}">수정하기</a>
+	<a href="modify?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">수정하기</a>
 	</div>
-	<form action="/jspCommunity/usr/article/doDelete?boardId=${article.boardId}&id=${article.id}" methods="POST" target="_blank">
-		<input type="submit" value="삭제하기" />
-	</form>
+	<div>
+	<a href="/jspCommunity/usr/article/doDelete?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">삭제하기</a>
+	</div>
+
+	</c:if>
+	
 	
 <%@ include file="../../part/foot.jspf" %>

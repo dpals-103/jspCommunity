@@ -19,11 +19,11 @@ public class UsrMemberController {
 		memberService = Container.memberService;
 	}
 
-	public static String showJoin(HttpServletRequest req, HttpServletResponse resp) {
+	public String showJoin(HttpServletRequest req, HttpServletResponse resp) {
 		return "usr/member/join";
 	}
 
-	public static String doJoin(HttpServletRequest req, HttpServletResponse resp) {
+	public String doJoin(HttpServletRequest req, HttpServletResponse resp) {
 
 		String loginId = req.getParameter("loginId");
 		String loginPw = req.getParameter("loginPw");
@@ -48,7 +48,6 @@ public class UsrMemberController {
 
 			return "common/redirect";
 		}
-		
 
 		int memberId = memberService.join(joinArgs);
 
@@ -58,38 +57,52 @@ public class UsrMemberController {
 		return "common/redirect";
 	}
 
-	
-	public static String joinCheck(HttpServletRequest req, HttpServletResponse resp) {
+	public String joinCheck(HttpServletRequest req, HttpServletResponse resp) {
 		return "/usr/member/joinCheck";
 	}
 
-	public static String showLogin(HttpServletRequest req, HttpServletResponse resp) {
+	public String showLogin(HttpServletRequest req, HttpServletResponse resp) {
 		return "usr/member/login";
 	}
 
-	public static String doLogin(HttpServletRequest req, HttpServletResponse resp) {
-		
+	public String doLogin(HttpServletRequest req, HttpServletResponse resp) {
+
+		HttpSession session = req.getSession();
+
 		String loginId = req.getParameter("loginId");
 		String loginPw = req.getParameter("loginPw");
-		
-		Member member = memberService.getMemberByloginId(loginId); 
-		
-		if(member == null) {
+
+		Member member = memberService.getMemberByloginId(loginId);
+
+		if (member == null) {
 			req.setAttribute("alertMsg", "일치하는 회원이 존재하지 않습니다.");
 			req.setAttribute("historyBack", true);
-		} else if(member.getLoginPw() != loginPw) {
+			return "common/redirect";
+			
+		} else if (member.getLoginPw().equals(loginPw) == false) {
 			req.setAttribute("alertMsg", "비밀번호가 일치하지 않습니다.");
 			req.setAttribute("historyBack", true);
+			return "common/redirect";
 		}
-		
-		
-		HttpSession session = req.getSession(); 
+
 		session.setAttribute("loginedMemberId", member.getId());
-		
-		req.setAttribute("alertMsg", String.format("%s님 환영합니다.",member.getLoginId()));
+
+		req.setAttribute("alertMsg", String.format("%s님 환영합니다.", member.getLoginId()));
+
 		req.setAttribute("replaceUrl", "../home/main");
-		
-		return "common/redirect"; 
-		
+
+		return "common/redirect";
+	}
+
+	public String doLogout(HttpServletRequest req, HttpServletResponse resp) {
+
+		HttpSession session = req.getSession();
+
+		session.removeAttribute("loginedMemberId");
+
+		req.setAttribute("alertMsg", "로그아웃 되었습니다");
+		req.setAttribute("replaceUrl", "../home/main");
+
+		return "common/redirect";
 	}
 }

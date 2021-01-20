@@ -12,7 +12,7 @@
 	<hr>
 	
 	<div>
-	<form action="/jspCommunity/usr/article/doModify" methods="POST" target="_blank">
+	<form action="/jspCommunity/usr/article/doModify" methods="POST">
 		<input type="hidden" name="boardId" value="${param.boardId}" />
 		<input type="hidden" name="id" value="${param.id}" />
 		<input type="hidden" name="memberId" value="${param.memberId}" />
@@ -21,7 +21,7 @@
 		<hr>
 		<textarea name="body" maxlength="1500">${article.body}</textarea>
 		<hr>
-		<input type="submit" value="전송"/>
+		<input type="submit" value="수정"/>
 		<button type="button" onclick="history.back();"/>뒤로가기</button>	
 	</form>
 	</div>

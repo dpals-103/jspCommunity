@@ -60,15 +60,17 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 			UsrMemberController memberController = Container.memberController;
 
 			if (actionMethodsName.equals("join")) {
-				jspPath = UsrMemberController.showJoin(req, resp);
+				jspPath = memberController.showJoin(req, resp);
 			} else if (actionMethodsName.equals("doJoin")) {
-				jspPath = UsrMemberController.doJoin(req, resp);
+				jspPath = memberController.doJoin(req, resp);
 			} else if (actionMethodsName.equals("joinCheck")) {
-				jspPath = UsrMemberController.joinCheck(req, resp);
+				jspPath = memberController.joinCheck(req, resp);
 			} else if (actionMethodsName.equals("login")) {
-				jspPath = UsrMemberController.showLogin(req, resp);
+				jspPath = memberController.showLogin(req, resp);
 			}else if (actionMethodsName.equals("doLogin")) {
-				jspPath = UsrMemberController.doLogin(req, resp);
+				jspPath = memberController.doLogin(req, resp);
+			}else if (actionMethodsName.equals("logout")) {
+				jspPath = memberController.doLogout(req, resp);
 			}
 		}
 		return jspPath;
