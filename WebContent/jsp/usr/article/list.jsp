@@ -16,7 +16,9 @@
 	</div>
 
 	<div>
-		<a href="write?boardId=${param.boardId}">글쓰기</a>
+		<c:if test="${session.loginedMemberId > 0}">
+		<a href="write?boardId=${param.boardId}&memberId=${session.loginedMemberId}">글쓰기</a>
+		</c:if>
 	</div>
 	<c:forEach items="${articles}" var="article">
 	<div>
@@ -35,5 +37,8 @@
 
 	</div>
 	</c:forEach>
+	<div>
+	<button type="button" onclick="history.back();"/>뒤로가기</button>	
+	</div>
 	
 <%@ include file="../../part/foot.jspf" %>

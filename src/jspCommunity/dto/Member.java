@@ -13,6 +13,7 @@ public class Member {
 	private String name;
 	private String nickName;
 	private String email;
+	private String cellPhone;
 	private String regDate;
 	private int adminLevel; 
 
@@ -23,6 +24,7 @@ public class Member {
 		this.name = (String)map.get("name");
 		this.nickName = (String)map.get("nickName");
 		this.email = (String)map.get("email");
+		this.cellPhone = (String)map.get("cellPhone");
 		this.regDate = (String)map.get("regDate");
 		this.adminLevel = (int)map.get("adminLevel");
 	}

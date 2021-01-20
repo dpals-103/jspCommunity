@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jspCommunity.container.Container;
+import jspCommunity.controller.usr.AdmMemberController;
 import jspCommunity.controller.usr.UsrArticleController;
+import jspCommunity.controller.usr.UsrHomeController;
 import jspCommunity.controller.usr.UsrMemberController;
 import jspCommunity.mysqlUtil.MysqlUtil;
 
@@ -18,28 +20,22 @@ import jspCommunity.mysqlUtil.MysqlUtil;
  * Servlet implementation class ArticleListServlet
  */
 @WebServlet("/usr/*")
-public class UsrDispatcherServlet extends HttpServlet {
+public class UsrDispatcherServlet extends DispatcherServlet {
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-		resp.setCharacterEncoding("UTF-8");
-		resp.setContentType("text/html; charset=UTF-8");
-
-		String requestUri = req.getRequestURI();
-		String[] requestUriBits = requestUri.split("/");
-
-		if (requestUri.length() < 5) {
-			resp.getWriter().append("올바른 요청이 아닙니다");
-			return;
-		}
-
-		String controllerName = requestUriBits[3];
-		String actionMethodsName = requestUriBits[4];
-
-		MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
-		// MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+	@Override
+	protected String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName,
+			String actionMethodsName) {
 
 		String jspPath = null;
+		
+		if(controllerName.equals("home")) {
+			
+			UsrHomeController homeController = Container.homeController; 
+			
+			if(actionMethodsName.equals("main")) {
+				jspPath= homeController.showMain(req, resp); 
+			}
+		}
 
 		if (controllerName.equals("article")) {
 			UsrArticleController articleController = Container.articleController;
@@ -69,17 +65,12 @@ public class UsrDispatcherServlet extends HttpServlet {
 				jspPath = UsrMemberController.doJoin(req, resp);
 			} else if (actionMethodsName.equals("joinCheck")) {
 				jspPath = UsrMemberController.joinCheck(req, resp);
+			} else if (actionMethodsName.equals("login")) {
+				jspPath = UsrMemberController.showLogin(req, resp);
+			}else if (actionMethodsName.equals("doLogin")) {
+				jspPath = UsrMemberController.doLogin(req, resp);
 			}
 		}
-
-		MysqlUtil.closeConnection();
-
-		RequestDispatcher rd = req.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
-		rd.forward(req, resp);
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doGet(req, resp);
+		return jspPath;
 	}
 }

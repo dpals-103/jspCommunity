@@ -38,4 +38,8 @@ public class ArticleService {
 		return articleDao.delete(memberId, boardId, id);
 	}
 
+	public List<Board> getBoards() {
+		return articleDao.getBoards(); 
+	}
+
 }

@@ -133,4 +133,22 @@ public class ArticleDao {
 		return d; 
 	}
 
+	public List<Board> getBoards() {
+		
+		List<Board> boards = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+
+		sql.append("select * ");
+		sql.append("from board");
+	
+		List<Map<String, Object>> boardMapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> boardMap : boardMapList) {
+			boards.add(new Board(boardMap));
+		}
+
+		return boards;
+	}
+
 }
