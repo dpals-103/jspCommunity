@@ -51,7 +51,7 @@ public class MemberDao {
 		sql.append("select loginId from member where loginId = ?", loginId);
 		String joinedId = MysqlUtil.selectRowStringValue(sql);
 
-		if (joinedId.isBlank()) {
+		if (joinedId.isEmpty()) {
 			return null;
 		} else if (joinedId.equals(loginId)) {
 			return joinedId;

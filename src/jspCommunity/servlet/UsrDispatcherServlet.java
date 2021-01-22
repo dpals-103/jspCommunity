@@ -27,13 +27,13 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 			String actionMethodsName) {
 
 		String jspPath = null;
-		
-		if(controllerName.equals("home")) {
-			
-			UsrHomeController homeController = Container.homeController; 
-			
-			if(actionMethodsName.equals("main")) {
-				jspPath= homeController.showMain(req, resp); 
+
+		if (controllerName.equals("home")) {
+
+			UsrHomeController homeController = Container.homeController;
+
+			if (actionMethodsName.equals("main")) {
+				jspPath = homeController.showMain(req, resp);
 			}
 		}
 
@@ -67,12 +67,15 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 				jspPath = memberController.joinCheck(req, resp);
 			} else if (actionMethodsName.equals("login")) {
 				jspPath = memberController.showLogin(req, resp);
-			}else if (actionMethodsName.equals("doLogin")) {
+			} else if (actionMethodsName.equals("doLogin")) {
 				jspPath = memberController.doLogin(req, resp);
-			}else if (actionMethodsName.equals("logout")) {
+			} else if (actionMethodsName.equals("logout")) {
 				jspPath = memberController.doLogout(req, resp);
+			} else if (actionMethodsName.equals("getLoginIdDup")) {
+				jspPath = memberController.getLoginIdDup(req, resp);
 			}
 		}
+
 		return jspPath;
 	}
 }

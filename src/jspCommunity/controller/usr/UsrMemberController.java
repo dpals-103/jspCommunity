@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import jspCommunity.container.Container;
 import jspCommunity.dto.Member;
 import jspCommunity.service.MemberService;
+import jspCommunity.util.Util;
 
 public class UsrMemberController {
 	private static MemberService memberService;
@@ -39,15 +40,6 @@ public class UsrMemberController {
 		joinArgs.put("nickName", nickName);
 		joinArgs.put("email", email);
 		joinArgs.put("cellPhone", cellPhone);
-
-		String joinedId = memberService.getJoinedIdByLoginId(loginId);
-
-		if (joinedId != null) {
-			req.setAttribute("alertMsg", "이미 사용중인 아이디입니다.");
-			req.setAttribute("historyBack", true);
-
-			return "common/redirect";
-		}
 
 		int memberId = memberService.join(joinArgs);
 
@@ -78,7 +70,7 @@ public class UsrMemberController {
 			req.setAttribute("alertMsg", "일치하는 회원이 존재하지 않습니다.");
 			req.setAttribute("historyBack", true);
 			return "common/redirect";
-			
+
 		} else if (member.getLoginPw().equals(loginPw) == false) {
 			req.setAttribute("alertMsg", "비밀번호가 일치하지 않습니다.");
 			req.setAttribute("historyBack", true);
@@ -104,5 +96,32 @@ public class UsrMemberController {
 		req.setAttribute("replaceUrl", "../home/main");
 
 		return "common/redirect";
+	}
+
+	public String getLoginIdDup(HttpServletRequest req, HttpServletResponse resp) {
+		System.out.println("들어옴");
+		String loginId = req.getParameter("loginId");
+
+		Member member = memberService.getMemberByloginId(loginId);
+
+		Map<String, Object> rs = new HashMap<>();
+
+		String resultCode = null;
+		String msg = null;
+
+		if (member != null) {
+			resultCode = "F-1";
+			msg = "이미 사용중인 로그인아이디 입니다.";
+		} else {
+			resultCode = "S-1";
+			msg = "사용가능한 로그인아이디 입니다.";
+		}
+
+		rs.put("resultCode", resultCode);
+		rs.put("msg", msg);
+		rs.put("loginId", loginId);
+
+		req.setAttribute("data", Util.getJsonText(rs));
+		return "common/pure";
 	}
 }
