@@ -15,30 +15,34 @@
  
 	<script>
 	let DoJoinForm__submited = false;
-	let DoJoinForm__checkedLoginId = "";
+
+	/*인증받은 아이디*/ 
+	let DoJoinForm__checkedLoginId = ""; 
 	
-	// 로그인 아이디 중복체크
+	/*로그인 아이디 중복체크*/
 	function CheckDupId(el){
-		const from = $(el).closest('form').get(0);
+
+		const from = $(el).closest('form').get(0);  
 		const loginId = from.loginId.value;
-		
+
 		$.get(
 			"getLoginIdDup",
 			{
 				loginId
+				/* => loginId : loginId */
 			},
-			function(data) {
-				if ( data.msg ) {
-					alert(data.msg);
+			function(data){
+				if (data.msg){
+					alert(data.msg); 
 				}
-			
-				if ( data.resultCode.substr(0, 2) == "S-" ) {
-					DoJoinForm__checkedLoginId = data.loginId;
+				if (data.resultCode.substr(0,2) == "S-"){
+					alert(data.msg);
+					DoJoinForm__checkedLoginId = data.loginId; 
 				}
 			},
 			"json"
-		);
-		
+	   ); 
+
 	}
 	
 
@@ -58,10 +62,12 @@
 			return;
 		}
 		
-		if ( form.loginId.value != DoJoinForm__checkedLoginId ) {
-			alert('로그인 아이디 중복검사를 해주세요.');
-			form.btnDupCheck.focus();
-			return false;
+
+		if(form.loginId.value != DoJoinForm__checkedLoginId){
+			alert('아이디 중복검사를 해주세요'); 
+			form.btnDupCheck.focus(); 
+
+			return false; 
 		}
 		
 		form.loginPw.value = form.loginPw.value.trim();
@@ -136,11 +142,9 @@
 
 
 		<div>아이디</div>
-		<div>
 		<input type="text" name="loginId" id="loginId" placeholder="아이디를 입력하세요"
 			maxlength="50" />
 		<button type="button" onclick="CheckDupId(this);" name="btnDupCheck">중복체크</button>
-		</div>
 		<hr>
 		<div>비밀번호</div>
 		<input type="text" name="loginPw" placeholder="비밀번호를 입력하세요"

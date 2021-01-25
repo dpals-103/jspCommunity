@@ -16,10 +16,8 @@
 	</div>
 
 	<div>
-		<c:if test="${sessionScope.loginedMemberId > 0}">
 		<a href="write?boardId=${param.boardId}&memberId=${sessionScope.loginedMemberId}">글쓰기</a>
 		<hr>
-		</c:if>
 	</div>
 	<c:forEach items="${articles}" var="article">
 	<div>

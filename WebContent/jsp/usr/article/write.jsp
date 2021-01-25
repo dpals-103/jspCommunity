@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
+
 
 <c:set var="pageTitle" value="게시물작성하기" />
 
@@ -15,7 +14,7 @@
 	<div>
 	<form action="/jspCommunity/usr/article/doWrite" methods="POST">
 		<input type="hidden" name="boardId" value="${param.boardId}" />
-		<input type="hidden" name="memberId" value="${param.memberId}" />
+		
 		<hr>
 		<input type="text" name="title" placeholder="제목을 입력하세요" maxlength="30"/>
 		<hr>

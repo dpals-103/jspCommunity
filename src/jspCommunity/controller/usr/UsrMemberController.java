@@ -99,29 +99,36 @@ public class UsrMemberController {
 	}
 
 	public String getLoginIdDup(HttpServletRequest req, HttpServletResponse resp) {
-	
-		String loginId = req.getParameter("loginId");
-
+		
+		String loginId = req.getParameter("loginId"); 
+		
 		Member member = memberService.getMemberByloginId(loginId);
-
-		Map<String, Object> rs = new HashMap<>();
-
-		String resultCode = null;
-		String msg = null;
-
-		if (member != null) {
-			resultCode = "F-1";
-			msg = "이미 사용중인 로그인아이디 입니다.";
-		} else {
-			resultCode = "S-1";
-			msg = "사용가능한 로그인아이디 입니다.";
+		
+		Map<String, Object> rs = new HashMap<>(); 
+		
+		String resultCode = null; 
+		String msg = null; 
+		
+		String data = ""; 
+		
+		if(member != null) {
+			resultCode = "F-1"; 
+			msg = "이미 사용중인 아이디 입니다."; 
 		}
-
+		else {
+			resultCode = "S-1"; 
+			msg = "사용 가능한 아이디입니다."; 
+		}
+		
+		
 		rs.put("resultCode", resultCode);
 		rs.put("msg", msg);
-		rs.put("loginId", loginId);
+		rs.put("loginId",loginId);
 
 		req.setAttribute("data", Util.getJsonText(rs));
+		
 		return "common/pure";
 	}
+
+	
 }
