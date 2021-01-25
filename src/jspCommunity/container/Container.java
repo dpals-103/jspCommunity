@@ -7,10 +7,12 @@ import jspCommunity.controller.usr.UsrMemberController;
 import jspCommunity.dao.ArticleDao;
 import jspCommunity.dao.MemberDao;
 import jspCommunity.service.ArticleService;
+import jspCommunity.service.MailService;
 import jspCommunity.service.MemberService;
 
 public class Container {
 
+	public static MailService mailService;
 	public static UsrHomeController homeController;
 	public static ArticleService articleService; 
 	public static ArticleDao articleDao;
@@ -23,8 +25,11 @@ public class Container {
 	static {
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
+		
+		mailService = new MailService(); 
 		articleService = new ArticleService();
 		memberService = new MemberService(); 
+		
 		
 		articleController = new UsrArticleController(); 
 		memberController = new UsrMemberController();

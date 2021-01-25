@@ -1,12 +1,15 @@
 package jspCommunity.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +19,9 @@ import javax.servlet.http.HttpSession;
 import jspCommunity.container.Container;
 import jspCommunity.dto.Member;
 import jspCommunity.mysqlUtil.MysqlUtil;
+import jspCommunity.util.Util;
 
-/**
- * Servlet implementation class ArticleListServlet
- */
+
 
 public abstract class DispatcherServlet extends HttpServlet {
 
@@ -98,6 +100,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 		// 로그인 필요 필터링 인터셉터 시작
 
 		List<String> needToLogin = new ArrayList();
+		List<String> needToLogout = new ArrayList();
 
 		needToLogin.add("/usr/member/doLogout");
 		needToLogin.add("/usr/article/write");
@@ -105,7 +108,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 		needToLogin.add("/usr/article/modify");
 		needToLogin.add("/usr/article/doModift");
 		needToLogin.add("/usr/article/doDelete");
-
+		
+		
 		if (needToLogin.contains(actionUrl)) {
 
 			if ((boolean) req.getAttribute("isLogined") == false) {
@@ -115,8 +119,25 @@ public abstract class DispatcherServlet extends HttpServlet {
 				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
 				rd.forward(req, resp);
 			}
+		} 
+		
+		
+		needToLogout.add("/usr/member/doLogin"); 
+		needToLogout.add("/usr/member/join"); 
+		needToLogout.add("/usr/member/doJoin"); 
+		
+		if (needToLogout.contains(actionUrl)) {
 
-		}
+			if ((boolean) req.getAttribute("isLogined") == true) {
+				req.setAttribute("alertMsg", "로그아웃 후 이용해주세요");
+				req.setAttribute("replaceUrl", "../home/main");
+
+				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+				rd.forward(req, resp);
+			}
+		} 
+		
+
 
 		// 로그인 필요 필터링 인터셉터 끝
 		Map rs = new HashMap<>();
