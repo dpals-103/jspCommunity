@@ -6,6 +6,7 @@ import java.util.Map;
 import jspCommunity.container.Container;
 import jspCommunity.dao.MemberDao;
 import jspCommunity.dto.Member;
+import jspCommunity.util.Util;
 
 public class MailService {
 	private String gmailId;
@@ -18,6 +19,10 @@ public class MailService {
 		this.gmailPw = gmailPw; 
 		this.from = from; 
 		this.fromName= fromName; 
+	}
+
+	public int sendMail(String to, String title, String body) {
+		return Util.sendMail(gmailId, gmailPw, from, fromName, to, title, body); 
 	}
 
 	
