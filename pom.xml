@@ -12,14 +12,22 @@
 	</properties>
 
 
+
 	<dependencies>
-	
+
+
+		<!-- https://mvnrepository.com/artifact/org.webjars.bower/jquery -->
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.5.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-	
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
 		<dependency>
@@ -43,7 +51,6 @@
 			<version>8.0.22</version>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>

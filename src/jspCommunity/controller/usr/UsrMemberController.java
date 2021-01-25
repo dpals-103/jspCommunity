@@ -99,7 +99,7 @@ public class UsrMemberController {
 	}
 
 	public String getLoginIdDup(HttpServletRequest req, HttpServletResponse resp) {
-		System.out.println("들어옴");
+	
 		String loginId = req.getParameter("loginId");
 
 		Member member = memberService.getMemberByloginId(loginId);

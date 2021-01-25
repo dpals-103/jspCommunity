@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="java.util.List"%>
-<%@ page import="java.util.Map"%>
 
 <c:set var="pageTitle" value="회원가입" />
 
@@ -14,17 +12,32 @@
 
 <div>
 
-
+ 
 	<script>
 	let DoJoinForm__submited = false;
 	let DoJoinForm__checkedLoginId = "";
 	
 	// 로그인 아이디 중복체크
 	function CheckDupId(el){
-		
-		const from = $(el).closest(form).get(0);
+		const from = $(el).closest('form').get(0);
 		const loginId = from.loginId.value;
-		alert(loginId);
+		
+		$.get(
+			"getLoginIdDup",
+			{
+				loginId
+			},
+			function(data) {
+				if ( data.msg ) {
+					alert(data.msg);
+				}
+			
+				if ( data.resultCode.substr(0, 2) == "S-" ) {
+					DoJoinForm__checkedLoginId = data.loginId;
+				}
+			},
+			"json"
+		);
 		
 	}
 	
