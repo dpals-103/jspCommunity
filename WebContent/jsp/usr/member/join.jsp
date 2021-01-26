@@ -2,10 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+
 <c:set var="pageTitle" value="회원가입" />
 
 <%@ include file="../../part/head.jspf"%>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
 <h1>회원가입</h1>
 <hr>
@@ -130,6 +132,10 @@
 			
 			return;
 		}
+
+		form.loginPwReal.value = sha256(form.loginPw.value); 
+		form.loginPw.value =""; 
+		form.loginPwConfirm.value =""; 
 		
 		form.submit();
 		DoJoinForm__submited = true;
@@ -139,7 +145,7 @@
 
 	<form action="/jspCommunity/usr/member/doJoin" methods="POST"
 		onsubmit="DoJoinForm__submit(this); return false;">
-
+		<input type="hidden" name="loginPwReal" />
 
 		<div>아이디</div>
 		<input type="text" name="loginId" id="loginId" placeholder="아이디를 입력하세요"
@@ -147,11 +153,11 @@
 		<button type="button" onclick="CheckDupId(this);" name="btnDupCheck">중복체크</button>
 		<hr>
 		<div>비밀번호</div>
-		<input type="text" name="loginPw" placeholder="비밀번호를 입력하세요"
+		<input type="password" name="loginPw" placeholder="비밀번호를 입력하세요"
 			maxlength="100" />
 		<hr>
 		<div>비밀번호 확인</div>
-		<input type="text" name="loginPwConfirm"
+		<input type="password" name="loginPwConfirm"
 			placeholder="비밀번호를 한번 더 입력해주세요" maxlength="100" />
 		<hr>
 		<div>이름</div>
@@ -162,7 +168,7 @@
 			maxlength="30" />
 		<hr>
 		<div>전화번호</div>
-		<input type="number" name="cellPhone" placeholder="연락처를 입력하세요"
+		<input type="tel" name="cellPhone" placeholder="연락처를 입력하세요"
 			maxlength="100" />
 		<hr>
 		<div>이메일</div>

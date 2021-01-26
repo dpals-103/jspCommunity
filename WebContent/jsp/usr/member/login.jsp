@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 <c:set var="pageTitle" value="로그인" />
 
 <%@ include file="../../part/head.jspf" %>
@@ -45,6 +46,10 @@
 			 
 		}
 
+
+		form.loginPwReal.value = sha256(form.loginPw.value);
+		form.loginPw.value = ""; 
+
 		form.submit();
 		DoLoginForm__submited = true;
 	}
@@ -53,11 +58,14 @@
 	
 	
 	<form action="/jspCommunity/usr/member/doLogin" methods="POST" onsubmit="DoLoginForm__submit(this); return false;">
+	
+	<input type="hidden" name="loginPwReal" />
+	
 		<div>아이디</div>
 	    <input type="text" name="loginId" placeholder="아이디" maxlength="50"/>
 		<hr>
 		<div>비밀번호</div>
-		<input type="text" name="loginPw" placeholder="비밀번호를 입력하세요" maxlength="100"/>
+		<input type="password" name="loginPw" placeholder="비밀번호를 입력하세요" maxlength="100"/>
 		<hr>
 		
 		<input type="submit" value="로그인"/>
