@@ -99,36 +99,76 @@ public class UsrMemberController {
 	}
 
 	public String getLoginIdDup(HttpServletRequest req, HttpServletResponse resp) {
-		
-		String loginId = req.getParameter("loginId"); 
-		
+
+		String loginId = req.getParameter("loginId");
+
 		Member member = memberService.getMemberByloginId(loginId);
-		
-		Map<String, Object> rs = new HashMap<>(); 
-		
-		String resultCode = null; 
-		String msg = null; 
-		
-		String data = ""; 
-		
-		if(member != null) {
-			resultCode = "F-1"; 
-			msg = "이미 사용중인 아이디 입니다."; 
+
+		Map<String, Object> rs = new HashMap<>();
+
+		String resultCode = null;
+		String msg = null;
+
+		String data = "";
+
+		if (member != null) {
+			resultCode = "F-1";
+			msg = "이미 사용중인 아이디 입니다.";
+		} else {
+			resultCode = "S-1";
+			msg = "사용 가능한 아이디입니다.";
 		}
-		else {
-			resultCode = "S-1"; 
-			msg = "사용 가능한 아이디입니다."; 
-		}
-		
-		
+
 		rs.put("resultCode", resultCode);
 		rs.put("msg", msg);
-		rs.put("loginId",loginId);
+		rs.put("loginId", loginId);
 
 		req.setAttribute("data", Util.getJsonText(rs));
-		
+
 		return "common/pure";
 	}
 
-	
+	public String showFindLoginId(HttpServletRequest req, HttpServletResponse resp) {
+
+		HttpSession session = req.getSession();
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			req.setAttribute("alertMsg", "로그아웃 해주세요");
+			req.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+
+		return "usr/member/findLoginId";
+
+	}
+
+	public String doFindLoginId(HttpServletRequest req, HttpServletResponse resp) {
+
+		HttpSession session = req.getSession();
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			req.setAttribute("alertMsg", "로그아웃 해주세요");
+			req.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		
+		String name = req.getParameter("name");
+		String email = req.getParameter("email");
+		
+		
+		Member member = memberService.getMemberByNameAndEmail(name,email); 
+		
+		if (member == null) {
+			req.setAttribute("alertMsg", "일치하는 회원이 존재하지 않습니다.");
+			req.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+		
+		req.setAttribute("alertMsg", String.format("아이디는 %s입니다", member.getLoginId()));
+		req.setAttribute("replaceUrl", "../member/login" );
+		return "common/redirect";
+		
+		
+	}
+
 }

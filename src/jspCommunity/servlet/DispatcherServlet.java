@@ -125,6 +125,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 		needToLogout.add("/usr/member/doLogin"); 
 		needToLogout.add("/usr/member/join"); 
 		needToLogout.add("/usr/member/doJoin"); 
+		needToLogout.add("/usr/member/findLoginId"); 
+		needToLogout.add("/usr/member/doFindLoginId"); 
 		
 		if (needToLogout.contains(actionUrl)) {
 
