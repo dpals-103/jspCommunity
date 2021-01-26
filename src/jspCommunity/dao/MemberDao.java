@@ -1,16 +1,25 @@
 package jspCommunity.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jspCommunity.dto.Article;
-import jspCommunity.dto.Board;
+import jspCommunity.App;
+import jspCommunity.container.Container;
 import jspCommunity.dto.Member;
 import jspCommunity.mysqlUtil.MysqlUtil;
 import jspCommunity.mysqlUtil.SecSql;
+import jspCommunity.service.MailService;
+import jspCommunity.util.Util;
 
 public class MemberDao {
+	private static MemberDao memberDao;
+
+	public MemberDao() {
+
+		memberDao = Container.memberDao;
+	}
 
 	public List<Member> getMembers() {
 
@@ -58,10 +67,9 @@ public class MemberDao {
 		}
 		return null;
 	}
-	
 
 	public int join(Map<String, Object> args) {
-		
+
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO member set");
@@ -72,14 +80,14 @@ public class MemberDao {
 		sql.append(",email=?", args.get("email"));
 		sql.append(",cellPhone=?", args.get("cellPhone"));
 		sql.append(",regDate=now();");
-		
-		int memberId= MysqlUtil.insert(sql);
-		
-		return memberId; 
+
+		int memberId = MysqlUtil.insert(sql);
+
+		return memberId;
 	}
 
 	public Member getMemberByloginId(String loginId) {
-		
+
 		SecSql sql = new SecSql();
 
 		sql.append("select * from member where loginId = ?", loginId);
@@ -94,7 +102,7 @@ public class MemberDao {
 	}
 
 	public Member getMemberByNameAndEmail(String name, String email) {
-		
+
 		SecSql sql = new SecSql();
 
 		sql.append("select * from member");
@@ -112,5 +120,52 @@ public class MemberDao {
 		return new Member(map);
 	}
 
+	public int modify(Map<String, Object> args) {
+		SecSql sql = new SecSql();
+
+		sql.append("update member set");
+		sql.append("updateDate = now()");
+		
+		boolean needToUpdate = false; 
+		
+		if(args.get("loginPw") != null) {
+			needToUpdate = true;
+			sql.append(",loginPw=?", args.get("loginPw"));
+		}
+		
+		if(args.get("name") != null) {
+			needToUpdate = true;
+			sql.append(",name=?", args.get("name"));
+		}
+		
+		if(args.get("nickName") != null) {
+			needToUpdate = true;
+			sql.append(",nickName=?", args.get("nickName"));
+		}
+		
+		if(args.get("email") != null) {
+			needToUpdate = true;
+			sql.append(",email=?", args.get("email"));
+		}
+		
+		if(args.get("cellPhone") != null) {
+			needToUpdate = true;
+			sql.append(",cellPhone=?", args.get("cellPhone"));
+		}
+		
+		if(args.get("adminLevel") != null) {
+			needToUpdate = true;
+			sql.append(",adminLevel=?", args.get("adminLevel"));
+		}
+		
+		if (needToUpdate == false) {
+			return 0; 
+		}
+		
+		sql.append("where id = ?", args.get("id")); 
+		
+		return MysqlUtil.update(sql); 
+		
+	}
 
 }
