@@ -17,6 +17,48 @@
 	<div>
 		<h3>총 게시물 수 : ${totalCount}</h1>
 	</div>
+	<div>
+	<script>
+		let DoSearchForm__submited = false;
+		function DoSearchForm__submit(form) {
+
+			if (DoSearchForm__submited) {
+				alert('처리중입니다');
+				return;
+			}
+
+			form.searchKeyword.value = form.searchKeyword.value.trim();
+
+			if (form.searchKeyword.value.length == 0) {
+				alert('검색어를 입력해주세요');
+				form.searchKeyword.focus();
+				return;
+			}
+
+			form.submit();
+			DoSearchForm__submited = true;
+		}
+	</script>
+	<form action="" onsubmit="DoSearchForm__submit(this); return false;">
+			<select name="searchKeywordType" id="">
+				<option value="title">제목</option>
+				<option value="body">본문</option>
+			</select>
+			
+			<script>
+			const param__searchKeywordType = '${param.searchKeywordType}';
+
+			if(param__seachKeyswordType){
+				$('select[name="searchKeywordType"]').val('${param.searchKeyword}');
+			}
+			</script>
+			
+			<input type="hidden" name="boardId" value="${param.boardId}"/>
+			<input type="text" value="${param.searchKeyword}"name="searchKeyword" placeholder="검색어를 입력하세요"/>
+			<input type="submit" value="검색" />
+		</form>
+		<hr />
+	</div>
 
 	<div>
 		<a href="write?boardId=${param.boardId}&memberId=${sessionScope.loginedMemberId}">글쓰기</a>
