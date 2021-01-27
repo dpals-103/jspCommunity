@@ -14,6 +14,9 @@
 	<div>
 		<h1>${pageTitle}</h1>
 	</div>
+	<div>
+		<h3>총 게시물 수 : ${totalCount}</h1>
+	</div>
 
 	<div>
 		<a href="write?boardId=${param.boardId}&memberId=${sessionScope.loginedMemberId}">글쓰기</a>

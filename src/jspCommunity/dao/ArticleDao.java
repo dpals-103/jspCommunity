@@ -151,4 +151,18 @@ public class ArticleDao {
 		return boards;
 	}
 
+	public int getArticlesCountByBoardId(int boardId) {
+	
+
+		SecSql sql = new SecSql();
+
+		sql.append("select count(*) as count");
+		sql.append("from article as A");
+		sql.append("where boardId=?", boardId);
+
+	
+
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
 }

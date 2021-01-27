@@ -25,6 +25,8 @@ public class UsrArticleController {
 	public String showList(HttpServletRequest req, HttpServletResponse resp) {
 
 		int boardId = Integer.parseInt(req.getParameter("boardId"));
+		int totalCount = articleService.getArticlesCountByBoardId(boardId); 
+		
 
 		List<Article> articles = articleService.getArticles(boardId);
 
@@ -36,10 +38,10 @@ public class UsrArticleController {
 
 			return "common/redirect";
 		}
-
-		req.setAttribute("articles", articles);
-		req.setAttribute("boardId", boardId);
+		
 		req.setAttribute("board", board);
+		req.setAttribute("articles", articles);
+		req.setAttribute("totalCount", totalCount);
 
 		return "/usr/article/list";
 	}

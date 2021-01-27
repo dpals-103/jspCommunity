@@ -206,13 +206,13 @@ public class UsrMemberController {
 		ResultData sendTempLoginPwToEmailRs = memberService.sendTempLoginPwToEmail(member);
 		
 		if(sendTempLoginPwToEmailRs.isFail()){
-			req.setAttribute("alertMsg", sendTempLoginPwToEmailRs);
+			req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
 			req.setAttribute("historyBack", true);
 			return "common/redirect";	
 		}
 			
 		
-		req.setAttribute("alertMsg", String.format("고객님의 임시 비밀번호가 %s로 발송되었습니다", member.getEmail()));
+		req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
 		req.setAttribute("replaceUrl", "../member/login");
 		return "common/redirect";
 
