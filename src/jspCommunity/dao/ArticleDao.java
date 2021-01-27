@@ -188,7 +188,7 @@ public class ArticleDao {
 		return MysqlUtil.selectRowIntValue(sql);
 	}
 
-	public List<Article> getArticlesBySearch(int boardId, String searchKeyword, String searchKeywordType) {
+	public List<Article> getArticlesBySearch(int boardId, int limitStart, int limitCount , String searchKeyword, String searchKeywordType) {
 	
 		List<Article> articles = new ArrayList<>();
 
@@ -218,7 +218,11 @@ public class ArticleDao {
 			}
 		}
 
-		sql.append("order by A.id desc;");
+		sql.append("order by A.id desc");
+		
+		if( limitCount != -1) {
+			sql.append("limit ?, ?",limitStart, limitCount); 
+		}
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 

@@ -15,7 +15,7 @@
 		<h1>${pageTitle}</h1>
 	</div>
 	<div>
-		<h3>검색된 게시물 수 : ${searchCount}</h3>
+		<h3>검색된 게시물 수 : ${totalCount}</h3>
 	</div>
 	<div>
 	<script>
@@ -80,6 +80,32 @@
 
 	</div>
 	</c:forEach>
+	
+	<style>
+		.red{
+			color : red; 
+		}
+	</style>
+	
+	<div class ="con">
+		<c:if test ="${needToShowPrevPageBox}">
+			<c:set var="aUrl" value="?boardId=${param.boardId}&page=${prevPage}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}" />
+			<a href="${aUrl}">◀이전</a>
+		</c:if>
+		
+		<c:forEach var="i" begin="${pageBoxStartPage}" end="${pageBoxEndPage}" step="1">
+			<c:set var="aClass" value="${page == i ? 'red' : '' }"/>
+			<c:set var="aUrl" value="?boardId=${param.boardId}&page=${i}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}"/>
+			
+			<a class="${aClass}" href="${aUrl}">${i}</a>
+		</c:forEach>
+		
+		<c:if test ="${needToShowNextPageBox}">
+			<c:set var="aUrl" value="?boardId=${param.boardId}&page=${nextPage}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}"  />
+			<a href="${aUrl}">다음▶</a>
+		</c:if>
+	</div>
+	
 	<div>
 	<button type="button" onclick="history.back();"/>뒤로가기</button>	
 	</div>

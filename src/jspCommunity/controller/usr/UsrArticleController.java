@@ -14,6 +14,7 @@ import jspCommunity.dto.Board;
 import jspCommunity.dto.Member;
 import jspCommunity.service.ArticleService;
 import jspCommunity.service.MemberService;
+import jspCommunity.util.Util;
 
 public class UsrArticleController {
 	private ArticleService articleService;
@@ -25,13 +26,47 @@ public class UsrArticleController {
 	public String showList(HttpServletRequest req, HttpServletResponse resp) {
 
 		int boardId = Integer.parseInt(req.getParameter("boardId"));
-		
-		
 		String searchKeyword = req.getParameter("searchKeyword");
 		String searchKeywordType = req.getParameter("searchKeywordType");
-		int searchCount = articleService.getArticlesCountBySearch(boardId, searchKeyword, searchKeywordType);
 		
-		List<Article> articles = articleService.getArticlesBySearch(boardId, searchKeyword, searchKeywordType);;
+		int totalCount = articleService.getArticlesCountBySearch(boardId, searchKeyword, searchKeywordType);
+		
+		
+		int itemsInAPage = 15; 
+		// page prameter의 정수값 또는 문자형일시 정수로 변화해서 리턴, null이면 1을 리턴
+		int page = Util.getAsInt(req.getParameter("page"), 1); 
+		int limitStart = (page-1) * itemsInAPage;
+		int totalPage = (int)Math.ceil(totalCount / (double)itemsInAPage); 
+		
+		//페이지 박스 계산하기 
+		int pageBoxSize = 10; 
+		int prevPageBoxCount = (page-1) / pageBoxSize;
+		int pageBoxStartPage = pageBoxSize * prevPageBoxCount + 1;
+		int pageBoxEndPage = pageBoxStartPage + pageBoxSize - 1;
+		
+		if(pageBoxEndPage > totalPage) {
+			pageBoxEndPage = totalPage; 
+		}
+		
+		//이전버튼 페이지 계산 
+		int prevPage = pageBoxStartPage - 1; 
+		if (prevPage < 1) {
+			prevPage = 1; 
+		}
+		
+		//이전버튼 노출여부 
+		boolean needToShowPrevPageBox = page > 1; 
+		
+		//다음버튼 페이지 계산
+		int nextPage = pageBoxEndPage + 1; 
+		if (nextPage < totalPage) {
+			prevPage = totalPage; 
+		}
+		
+		//다음버튼 노출여부
+		boolean needToShowNextPageBox = page < totalPage;
+		
+		List<Article> articles = articleService.getArticlesBySearch(boardId, limitStart , itemsInAPage, searchKeyword, searchKeywordType);
 		//List<Article> articles = articleService.getArticles(boardId);
 
 		Board board = articleService.getBoard(boardId);
@@ -45,7 +80,20 @@ public class UsrArticleController {
 		
 		req.setAttribute("board", board);
 		req.setAttribute("articles", articles);
-		req.setAttribute("searchCount", searchCount);
+		req.setAttribute("totalCount", totalCount);
+		req.setAttribute("totalPage", totalPage);
+		req.setAttribute("page", page);
+		
+		req.setAttribute("needToShowPrevPageBox", needToShowPrevPageBox);
+		req.setAttribute("needToShowNextPageBox", needToShowNextPageBox);
+		
+		req.setAttribute("pageBoxStartPage", pageBoxStartPage);
+		req.setAttribute("pageBoxEndPage", pageBoxEndPage);
+
+		req.setAttribute("prevPage", prevPage);
+		req.setAttribute("nextPage", nextPage);
+		
+
 
 		return "/usr/article/list";
 	}

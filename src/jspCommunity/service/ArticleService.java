@@ -50,8 +50,8 @@ public class ArticleService {
 		return articleDao.getArticlesCountBySearch(boardId, searchKeyword, searchKeywordType); 
 	}
 
-	public List<Article> getArticlesBySearch(int boardId, String searchKeyword, String searchKeywordType) {
-		return articleDao.getArticlesBySearch(boardId, searchKeyword, searchKeywordType);
+	public List<Article> getArticlesBySearch(int boardId,int limitStart, int limitCount , String searchKeyword, String searchKeywordType) {
+		return articleDao.getArticlesBySearch(boardId, limitStart, limitCount, searchKeyword, searchKeywordType);
 	}
 
 }
