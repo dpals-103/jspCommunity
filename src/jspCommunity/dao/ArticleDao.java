@@ -114,13 +114,13 @@ public class ArticleDao {
 		sql.append("and id=?", id);
 
 		int m = MysqlUtil.update(sql);
-		
-		return m; 
+
+		return m;
 
 	}
 
 	public int delete(int memberId, int boardId, int id) {
-		
+
 		SecSql sql = new SecSql();
 
 		sql.append("delete from article");
@@ -129,19 +129,19 @@ public class ArticleDao {
 		sql.append("and id=?", id);
 
 		int d = MysqlUtil.delete(sql);
-		
-		return d; 
+
+		return d;
 	}
 
 	public List<Board> getBoards() {
-		
+
 		List<Board> boards = new ArrayList<>();
 
 		SecSql sql = new SecSql();
 
 		sql.append("select * ");
 		sql.append("from board");
-	
+
 		List<Map<String, Object>> boardMapList = MysqlUtil.selectRows(sql);
 
 		for (Map<String, Object> boardMap : boardMapList) {
@@ -152,17 +152,81 @@ public class ArticleDao {
 	}
 
 	public int getArticlesCountByBoardId(int boardId) {
-	
 
 		SecSql sql = new SecSql();
 
-		sql.append("select count(*) as count");
-		sql.append("from article as A");
+		sql.append("select count(*)");
+		sql.append("from article");
 		sql.append("where boardId=?", boardId);
 
-	
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
+	public int getArticlesCountBySearch(int boardId, String searchKeyword, String searchKeywordType) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("select count(*)");
+		sql.append("from article");
+		sql.append("where 1");
+
+		if (boardId != 0) {
+			sql.append("and boardId =?", boardId);
+		}
+
+		if (searchKeyword != null) {
+			if (searchKeywordType == null || searchKeywordType.equals("title")) {
+				sql.append("and title like concat('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType == null || searchKeywordType.equals("body")) {
+				sql.append("and body like concat('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType.equals("titleAndBody")) {
+				sql.append("and (title like concat('%', ? '%') or body like concat('%', ? '%'))", searchKeyword,
+						searchKeywordType);
+			}
+		}
 
 		return MysqlUtil.selectRowIntValue(sql);
+	}
+
+	public List<Article> getArticlesBySearch(int boardId, String searchKeyword, String searchKeywordType) {
+	
+		List<Article> articles = new ArrayList<>();
+
+		SecSql sql = new SecSql();
+
+		sql.append("select A.*");
+		sql.append(",M.name as extra__writer");
+		sql.append(",B.category as extra__category");
+		sql.append("from article as A");
+		sql.append("inner join `member` as M");
+		sql.append("on A.memberId = M.id");
+		sql.append("inner join board as B");
+		sql.append("on A.boardId = B.id");
+
+		if (boardId != 0) {
+			sql.append("where A.boardId=?", boardId);
+		}
+		
+		if (searchKeyword != null) {
+			if (searchKeywordType == null || searchKeywordType.equals("title")) {
+				sql.append("and title like concat('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType == null || searchKeywordType.equals("body")) {
+				sql.append("and body like concat('%', ? '%')", searchKeyword);
+			} else if (searchKeywordType.equals("titleAndBody")) {
+				sql.append("and (title like concat('%', ? '%') or body like concat('%', ? '%'))", searchKeyword,
+						searchKeywordType);
+			}
+		}
+
+		sql.append("order by A.id desc;");
+
+		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
+
+		for (Map<String, Object> articleMap : articleMapList) {
+			articles.add(new Article(articleMap));
+		}
+
+		return articles;
 	}
 
 }

@@ -15,7 +15,7 @@
 		<h1>${pageTitle}</h1>
 	</div>
 	<div>
-		<h3>총 게시물 수 : ${totalCount}</h1>
+		<h3>검색된 게시물 수 : ${searchCount}</h3>
 	</div>
 	<div>
 	<script>
@@ -40,21 +40,22 @@
 		}
 	</script>
 	<form action="" onsubmit="DoSearchForm__submit(this); return false;">
-			<select name="searchKeywordType" id="">
-				<option value="title">제목</option>
-				<option value="body">본문</option>
-			</select>
-			
-			<script>
+
+		<input type="hidden" name="boardId" value="${param.boardId}" /> 
+		<select name="searchKeywordType" id="">
+			<option value="title">제목</option>
+			<option value="body">본문</option>
+		</select>
+
+		<script>
 			const param__searchKeywordType = '${param.searchKeywordType}';
 
-			if(param__seachKeyswordType){
-				$('select[name="searchKeywordType"]').val('${param.searchKeyword}');
+			if (param__searchKeywordType) {
+				$('select[name="searchKeywordType"]').val(param__searchKeywordType);
 			}
-			</script>
-			
-			<input type="hidden" name="boardId" value="${param.boardId}"/>
-			<input type="text" value="${param.searchKeyword}"name="searchKeyword" placeholder="검색어를 입력하세요"/>
+		</script>
+
+		<input type="text" value="${param.searchKeyword}"name="searchKeyword" placeholder="검색어를 입력하세요"/>
 			<input type="submit" value="검색" />
 		</form>
 		<hr />
