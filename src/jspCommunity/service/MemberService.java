@@ -8,6 +8,7 @@ import jspCommunity.App;
 import jspCommunity.container.Container;
 import jspCommunity.dao.MemberDao;
 import jspCommunity.dto.Member;
+import jspCommunity.dto.ResultData;
 import jspCommunity.util.Util;
 
 public class MemberService {
@@ -43,7 +44,7 @@ public class MemberService {
 		return memberDao.getMemberByNameAndEmail(name, email);
 	}
 
-	public void sendTempLoginPwToEmail(Member actor) {
+	public ResultData sendTempLoginPwToEmail(Member actor) {
 
 		// 메일제목과 내용 만들기
 		String siteName = App.getSite();
@@ -55,14 +56,24 @@ public class MemberService {
 		String body = "<h1>임시패스워드 : " + tempPassword + "</h1>";
 		body += "<a href=\"" + siteLoginUrl + "\" target=\"_blank\"> 로그인하러가기 </a>";
 
+		Map<String, Object> rs = new HashMap<>();
+
 		// 메일발송
-		mailService.sendMail(actor.getEmail(), title, body);
+		int sendRs = mailService.sendMail(actor.getEmail(), title, body);
+
+		if (sendRs != 1) {
+			return new ResultData("F-1", "발송에 실패하였습니다");
+		}
 
 		// 고객의 패스워드를 지금 생성한 임시 패스워드로 변경하기
-		sendTempPassword(actor, tempPassword);
+		setTempPassword(actor, tempPassword);
+		
+		String resultMsg = "고객님의 새 임시 패스워드가 메일로 발송되었습니다"; 
+
+		return new ResultData("S-1",resultMsg,"email",actor.getEmail());
 	}
 
-	private void sendTempPassword(Member actor, String tempPassword) {
+	private void setTempPassword(Member actor, String tempPassword) {
 
 		Map<String, Object> modifyParam = new HashMap<>();
 

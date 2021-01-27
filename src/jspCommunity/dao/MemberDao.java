@@ -79,6 +79,7 @@ public class MemberDao {
 		sql.append(",nickName=?", args.get("nickName"));
 		sql.append(",email=?", args.get("email"));
 		sql.append(",cellPhone=?", args.get("cellPhone"));
+		sql.append(",updateDate=now()");
 		sql.append(",regDate=now();");
 
 		int memberId = MysqlUtil.insert(sql);

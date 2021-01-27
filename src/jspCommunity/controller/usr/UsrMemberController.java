@@ -1,7 +1,6 @@
 package jspCommunity.controller.usr;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import jspCommunity.container.Container;
 import jspCommunity.dto.Member;
+import jspCommunity.dto.ResultData;
 import jspCommunity.service.MemberService;
-import jspCommunity.util.Util;
 
 public class UsrMemberController {
 	private static MemberService memberService;
@@ -104,8 +103,6 @@ public class UsrMemberController {
 
 		Member member = memberService.getMemberByloginId(loginId);
 
-		Map<String, Object> rs = new HashMap<>();
-
 		String resultCode = null;
 		String msg = null;
 
@@ -119,13 +116,9 @@ public class UsrMemberController {
 			msg = "사용 가능한 아이디입니다.";
 		}
 
-		rs.put("resultCode", resultCode);
-		rs.put("msg", msg);
-		rs.put("loginId", loginId);
+		req.setAttribute("data", new ResultData(resultCode,msg, "loginId", loginId));
 
-		req.setAttribute("data", Util.getJsonText(rs));
-
-		return "common/pure";
+		return "common/json";
 	}
 
 	public String showFindLoginId(HttpServletRequest req, HttpServletResponse resp) {
@@ -210,7 +203,14 @@ public class UsrMemberController {
 			return "common/redirect";
 		}
 		
-		memberService.sendTempLoginPwToEmail(member);
+		ResultData sendTempLoginPwToEmailRs = memberService.sendTempLoginPwToEmail(member);
+		
+		if(sendTempLoginPwToEmailRs.isFail()){
+			req.setAttribute("alertMsg", sendTempLoginPwToEmailRs);
+			req.setAttribute("historyBack", true);
+			return "common/redirect";	
+		}
+			
 		
 		req.setAttribute("alertMsg", String.format("고객님의 임시 비밀번호가 %s로 발송되었습니다", member.getEmail()));
 		req.setAttribute("replaceUrl", "../member/login");

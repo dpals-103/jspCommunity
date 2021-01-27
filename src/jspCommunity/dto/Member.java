@@ -15,6 +15,7 @@ public class Member {
 	private String email;
 	private String cellPhone;
 	private String regDate;
+	private String updateDate;
 	private int adminLevel; 
 
 	public Member(Map<String, Object> map) {
@@ -26,6 +27,7 @@ public class Member {
 		this.email = (String)map.get("email");
 		this.cellPhone = (String)map.get("cellPhone");
 		this.regDate = (String)map.get("regDate");
+		this.updateDate = (String)map.get("updateDate");
 		this.adminLevel = (int)map.get("adminLevel");
 	}
 
