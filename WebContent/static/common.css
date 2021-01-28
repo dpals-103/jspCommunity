@@ -1,0 +1,38 @@
+/*폰트적용 시작*/
+@font-face {
+	font-family: 'GmarketSansMedium';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+html{
+	font-family: 'GmarketSansMedium';
+}
+/*폰트적용 끝*/
+
+/*노말라이즈 시작*/
+body,ul,li{
+	margin : 0;
+	padding : 0; 
+	list-style : none; 
+}
+
+a{
+	text-decoration: none;
+	color : inherit
+}
+/*노말라이즈 끝*/
+
+
+/*라이브러리 시작*/
+.con-min-width{
+	min-width : 320px;
+}
+
+.con{
+	max-width:1200px;
+}
+/*라이브러리 끝*/

@@ -218,4 +218,50 @@ public class UsrMemberController {
 
 	}
 
+	public String showModify(HttpServletRequest req, HttpServletResponse resp) {
+		
+		HttpSession session = req.getSession();
+
+		if (session.getAttribute("loginedMemberId") == null) {
+			req.setAttribute("alertMsg", "로그인 후 이용해주세요");
+			req.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
+
+		return "usr/member/modify";
+	}
+
+	public String doModify(HttpServletRequest req, HttpServletResponse resp) {
+		
+		String loginPw = (String)req.getParameter("loginPwReal");
+		
+		int loginedMemberId = (int)req.getAttribute("loginedMemberId");
+		
+		
+		if(loginPw != null && loginPw.length() == 0) {
+			loginPw = null; 
+		}
+		
+		
+		String name = (String)req.getParameter("name");
+		String nickName = (String)req.getParameter("nickName");
+		String email = (String)req.getParameter("email");
+		String cellPhone = (String)req.getParameter("cellPhone");
+
+		Map<String, Object> modifyParam = new HashMap<>();
+		modifyParam.put("loginPw", loginPw);
+		modifyParam.put("name", name);
+		modifyParam.put("nickName", nickName);
+		modifyParam.put("email", email);
+		modifyParam.put("cellPhone", cellPhone);
+		modifyParam.put("id", loginedMemberId);
+
+		memberService.modify(modifyParam);
+
+		req.setAttribute("alertMsg", loginPw);
+		req.setAttribute("replaceUrl", "../home/main");
+
+		return "common/redirect";
+	}
+
 }

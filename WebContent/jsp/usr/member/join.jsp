@@ -38,7 +38,6 @@
 					alert(data.msg); 
 				}
 				if (data.success){
-					alert(data.msg);
 					DoJoinForm__checkedLoginId = data.body.loginId; 
 				}
 			},

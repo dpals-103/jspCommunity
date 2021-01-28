@@ -5,12 +5,31 @@
 <head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <meta charset="UTF-8">
+
+<!-- 토스트 ui 시작 -->
+<!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/default.min.css">
+
+<!-- 토스트 UI 에디터, 자바스크립트 코어 -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js" defer></script>
+
+<!-- 코드 미러 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" />
+<!-- 토스트 UI 에디터, CSS 코어 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
+<!-- 토스트 UI 에디터, 신택스 하이라이트 플러그인 추가 -->
+<script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js" defer></script>
+<!-- 토스트 ui 끝 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/common.css" />
+<script src="${pageContext.request.contextPath}/static/common.js" defer></script>
 <title>${pageTitle}</title>
 </head>
 <body>
 
 	<div>
-		<c:if test="${sessionScope.loginedMemberId == null}">
+		<c:if test="${isLogined == false }">
 			<a href="../member/join">회원가입</a>
 			<a href="../member/login">로그인</a>
 			<a href="../member/findLoginId">아이디찾기</a>
@@ -19,11 +38,10 @@
 
 		<c:if test="${isLogined}">
 		<strong>${loginedMember.nickName}님</strong>
+		<a href="../member/logout">로그아웃</a>
+		<a href="../member/modify">회원정보수정</a>
 		</c:if>
 		
-		<c:if test="${sessionScope.loginedMemberId > 0}">
-			<a href="../member/logout">로그아웃</a>
-		</c:if>
 		<a href="../home/main">메인으로</a>
 
 

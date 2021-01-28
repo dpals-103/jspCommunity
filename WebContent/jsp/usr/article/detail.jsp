@@ -18,8 +18,9 @@
 		${article.extra__writer}<br>
 		제목 :
 		${article.title}<br> 
-		내용 :
-		${article.body}<br> 
+		<script type="text/x-template"> ${article.body} </script>
+		<div class="toast-ui-viewer" ></div>
+		<br> 
 		작성일 :
 		${article.regDate}<br>
 		<hr>

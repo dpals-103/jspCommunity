@@ -2,6 +2,6 @@
 	pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import="jspCommunity.util.Util"%>
 <%
-	Object data = request.getAttribute("data");
+Object data = request.getAttribute("data");
 response.getWriter().print(Util.getJsonText(data));
 %>

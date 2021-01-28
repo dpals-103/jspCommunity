@@ -84,7 +84,7 @@ public class MemberService {
 
 	}
 
-	private void modify(Map<String, Object> param) {
+	public void modify(Map<String, Object> param) {
 		memberDao.modify(param);
 	}
 

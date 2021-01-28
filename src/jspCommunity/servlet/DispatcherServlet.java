@@ -103,6 +103,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 		List<String> needToLogout = new ArrayList();
 
 		needToLogin.add("/usr/member/doLogout");
+		needToLogin.add("/usr/member/modify");
+		needToLogin.add("/usr/member/doModify");
 		needToLogin.add("/usr/article/write");
 		needToLogin.add("/usr/article/doWrite");
 		needToLogin.add("/usr/article/modify");
