@@ -258,7 +258,7 @@ public class UsrMemberController {
 
 		memberService.modify(modifyParam);
 
-		req.setAttribute("alertMsg", loginPw);
+		req.setAttribute("alertMsg", "회원정보가 수정되었습니다");
 		req.setAttribute("replaceUrl", "../home/main");
 
 		return "common/redirect";

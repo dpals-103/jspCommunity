@@ -41,10 +41,15 @@
 			
 			if ( form.loginPw.value != form.loginPwConfirm.value ) {
 				alert('로그인 비밀번호가 일치하지 않습니다.');
+				
 				form.loginPwConfirm.focus();
 				
 				return;
 			}
+
+			form.loginPwReal.value = sha256(form.loginPw.value);
+			form.loginPw.value = "";
+			form.loginPwConfirm.value = "";
 		}
 		
 			form.name.value = form.name.value.trim();
@@ -82,17 +87,12 @@
 
 				return;
 			}
-
-			if (form.loginPw.value.length > 0) {
-				
-				form.loginPwReal.value = sha256(form.loginPw.value);
-				form.loginPw.value = "";
-				form.loginPwConfirm.value = "";
-			}
-
+			
+			
 			form.submit();
-			DoModifyForm__submited = true;
-			alert(form.loginPwReal.value);
+			DoModifyForm__submited = true; 
+			
+	
 		}
 	</script>
 
