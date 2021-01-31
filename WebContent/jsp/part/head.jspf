@@ -3,46 +3,274 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<meta charset="UTF-8">
+<!-- 제이쿼리 -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<!-- 제이쿼리 -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- 폰트어썸 -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 <!-- 토스트 ui 시작 -->
 <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/default.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/default.min.css">
 
 <!-- 토스트 UI 에디터, 자바스크립트 코어 -->
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js" defer></script>
+<script
+	src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"
+	defer></script>
 
 <!-- 코드 미러 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" />
 <!-- 토스트 UI 에디터, CSS 코어 -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 <!-- 토스트 UI 에디터, 신택스 하이라이트 플러그인 추가 -->
-<script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js" defer></script>
+<script
+	src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js"
+	defer></script>
 <!-- 토스트 ui 끝 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/static/common.css" />
+
+
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/static/common.css" />
 <script src="${pageContext.request.contextPath}/static/common.js" defer></script>
 <title>${pageTitle}</title>
+
+<style>
+header {
+	height: 100px;
+}
+
+.top-bar {
+	height: 100%;
+}
+
+.top-bar>.con {
+	height: 100%;
+	align-items: center;
+	justify-content: space-between;
+}
+/*헤더--로고*/
+.top-bar>.con>.logo>span {
+	color: #9f898c;
+	font-family: 'Lora', serif;
+	font-weight: 700;
+	letter-spacing: -0.5px;
+	font-size: 2rem;
+	white-space: nowrap;
+}
+/*헤더--메뉴*/
+.top-bar>.con>.top-bar__menu ul ul {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+}
+
+.top-bar>.con>.top-bar__menu>ul>li {
+	position: relative;
+}
+
+.top-bar>.con>.top-bar__menu>ul>li  a {
+	color: #ceccc0;
+	display: flex;
+	align-items: center;
+	padding: 0.2rem 4rem;
+	white-space: nowrap;
+	font-size: 2vh;
+}
+
+.top-bar>.con>.top-bar__menu>ul>li a:hover {
+	color: #9f898c;
+}
+
+.top-bar>.con>.top-bar__menu>ul>li:not(:only-child):hover ul {
+	display: block;
+}
+
+/*헤더--계정*/
+.top-bar>.con>.top-bar__account>ul>li>a {
+	color: #7590a1;
+	display: flex;
+	align-items: center;
+	padding: 0.3rem 1rem;
+	white-space: nowrap;
+	font-size: 2vh;
+}
+
+.top-bar>.con>.top-bar__account>ul>li>a:hover {
+	color: #282828;
+	background-color: #7590a1;
+	border-radius: 8px;
+}
+
+/*헤더 --- 모바일버전(메뉴바) */
+.top-bar__mobile {
+	position: fixed;
+	width: 100%;
+	height: 85%;
+	right: -100%;
+	bottom: 0;
+	background-color: #282828;
+	transition: right .3s;
+}
+
+.menu-btn__mobile {
+	font-size: 2rem;
+	color: #ceccc0;
+}
+
+.menu-btn__mobile:hover {
+	cursor: pointer;
+}
+
+.top-bar__mobile.active {
+	right: 0;
+}
+
+.side-bar__mobile>ul {
+	flex-direction: column;
+	align-items: flex-start;
+	margin-top: 2rem;
+}
+
+.side-bar__mobile>ul>li {
+	margin-bottom: 1rem;
+}
+
+.side-bar__mobile  ul>li>a {
+	color: #ceccc0;
+	font-size: 1.5rem;
+	white-space: nowrap;
+	padding: 1rem;
+	display: block;
+}
+
+.side-bar__mobile  ul ul>li>a {
+	color: #ceccc0;
+	font-size: 1rem;
+	white-space: nowrap;
+	padding: 1rem;
+	display: block;
+}
+
+.side-bar__mobile  ul ul {
+	display: none;
+	position: absolute;
+	top: 10%;
+	left: 100%;
+}
+
+.side-bar__mobile>ul >li {
+	position: relative;
+}
+
+.side-bar__mobile>ul li:not(:only-child):hover > ul {
+	display: block;
+}
+
+.side-bar__mobile  ul li>a:hover {
+	color: #9f898c;
+}
+
+.side-bar__mobile  ul ul>li>a:active {
+	color: #9f898c;
+}
+</style>
 </head>
 <body>
 
-	<div>
-		<c:if test="${isLogined == false }">
-			<a href="../member/join">회원가입</a>
-			<a href="../member/login">로그인</a>
-			<a href="../member/findLoginId">아이디찾기</a>
-			<a href="../member/findLoginPw">비밀번호찾기</a>
-		</c:if>
+	<div class="content flex">
+		<!-- 헤더 탑바 시작-->
+		<header>
+			<div class="top-bar con-min-width ">
+				<div class="con flex">
+					<a href="../home/main" class="logo"> <span>our record</span>
+					</a>
+					<nav class="top-bar__menu visible-md-up">
+						<ul class="flex">
+							<li><a href="../home/main">Home</a></li>
+							<li><a href="">Playlist</a>
+								<ul>
+									<c:forEach items="${boards}" var="board">
+										<li><a href="../article/list?boardId=${board.id}">${board.category}</a></li>
+									</c:forEach>
+								</ul></li>
+							<li><a href="../article/list">Diary</a></li>
+						</ul>
+					</nav>
+					<nav class="top-bar__account visible-md-up">
+						<ul class="flex">
 
-		<c:if test="${isLogined}">
-		<strong>${loginedMember.nickName}님</strong>
-		<a href="../member/logout">로그아웃</a>
-		<a href="../member/modify">회원정보수정</a>
-		</c:if>
-		
-		<a href="../home/main">메인으로</a>
+							<c:if test="${isLogined == false}">
+								<li><a href="../member/join">Sign Up</a></li>
+								<li><a href="../member/login">Sign In</a></li>
+							</c:if>
 
+							<c:if test="${isLogined}">
+								<li>${loginedMember.nickName}님</li>
+								<li><a href="../member/logout"></a>Sign Out</li>
+								<li><a href="../member/modify"></a>Modify</li>
+							</c:if>
 
-	</div>
+						</ul>
+					</nav>
+					<!--모바일버전 시작-->
+					<script>
+						function Topbar__Mobile__init() {
+							$('.menu-btn__mobile').click(
+									function() {
+
+										let $this = $(this);
+
+										if ($this.hasClass('active')) {
+											$this.removeClass('active');
+											$('.top-bar__mobile').removeClass(
+													'active');
+										} else {
+											$this.addClass('active');
+											$('.top-bar__mobile').addClass(
+													'active');
+										}
+									});
+						}
+
+						Topbar__Mobile__init();
+					</script>
+					<div class="menu-btn__mobile visible-sm-down"
+						onclick="Topbar__Mobile__init()">
+						<i class="fas fa-bars"></i>
+					</div>
+
+					<div class="top-bar__mobile ">
+						<nav class="side-bar__mobile visible-sm-down">
+							<ul class="flex">
+
+								<li><a href="../member/join">Sign Up</a></li>
+								<li><a href="../member/login">Sign In</a></li>
+								<li><a href="">Playlist</a>
+									<ul>
+										<c:forEach items="${boards}" var="board">
+											<li><a href="../article/list?boardId=${board.id}">${board.category}</a></li>
+										</c:forEach>
+									</ul></li>
+								<li><a href="../article/list">Diary</a></li>
+							</ul>
+						</nav>
+						<!--모바일버전 끝-->
+					</div>
+				</div>
+		</header>
+		<!-- 헤더 탑바 끝-->

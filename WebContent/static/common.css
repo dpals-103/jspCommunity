@@ -1,16 +1,15 @@
-/*폰트적용 시작*/
-@font-face {
-	font-family: 'GmarketSansMedium';
-	src:
-		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
-		format('woff');
-	font-weight: normal;
-	font-style: normal;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+/*font-family: 'Noto Sans KR', sans-serif;*/
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+/*font-family: 'Lora', serif;
+font-family: 'Noto Sans KR', sans-serif*/
+
+/*노말라이즈 시작*/
+html{
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-html{
-	font-family: 'GmarketSansMedium';
-}
 /*폰트적용 끝*/
 
 /*노말라이즈 시작*/
@@ -28,11 +27,41 @@ a{
 
 
 /*라이브러리 시작*/
+
+/*전체*/
+body{
+  background-color: #282828; 
+}
+
+.content{
+  flex-direction : column;
+  min-height : 100vh;
+}
+
 .con-min-width{
-	min-width : 320px;
+  min-width : 320px; 
 }
 
 .con{
-	max-width:1200px;
+  max-width : 1200px;
+  margin : 0 auto; 
+  padding : 0 20px;
 }
+
+.flex{
+  display : flex; 
+}
+
+@media(min-width:801px){
+  .visible-sm-down{
+    display : none !important; 
+  }
+}
+
+@media(max-width:800px){
+  .visible-md-up{
+    display : none !important; 
+  }
+}
+
 /*라이브러리 끝*/

@@ -14,10 +14,12 @@ import jspCommunity.util.Util;
 public class MemberService {
 	private static MemberDao memberDao;
 	private static MailService mailService;
+	
 
 	public MemberService() {
 		memberDao = Container.memberDao;
 		mailService = Container.mailService;
+		
 	}
 
 	public static List<Member> getMembers() {
@@ -81,7 +83,8 @@ public class MemberService {
 		modifyParam.put("loginPw", Util.sha256(tempPassword));
 
 		modify(modifyParam);
-
+		
+		
 	}
 
 	public void modify(Map<String, Object> param) {

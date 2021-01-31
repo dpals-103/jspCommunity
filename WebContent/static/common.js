@@ -1,3 +1,22 @@
+function Topbar__Mobile__init(){
+  $('.menu-btn__mobile').click(function(){
+     
+    let $this = $(this);
+    
+    if( $this.hasClass('active')){
+      $this.removeClass('active');
+      $('.top-bar__mobile').removeClass('active');
+    }
+    else {
+      $this.addClass('active');
+      $('.top-bar__mobile').addClass('active');
+    }
+  });
+}
+
+Topbar__Mobile__init();
+
+
 // 유튜브 플러그인 시작
 function youtubePlugin() {
   toastui.Editor.codeBlockManager.setReplacer('youtube', youtubeId => {
@@ -73,5 +92,7 @@ function EditorViewer__init() {
 }
 
 
+
 EditorViewer__init();
 Editor__init();
+

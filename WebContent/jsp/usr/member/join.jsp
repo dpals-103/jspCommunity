@@ -7,15 +7,87 @@
 
 <%@ include file="../../part/head.jspf"%>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
-<h1>회원가입</h1>
-<hr>
 
-<div>
+<style>
+section {
+	flex-grow: 1;
+}
 
- 
-	<script>
+.signup-box>.con {
+	width: 300px;
+	flex-direction: column;
+	align-items: center;
+}
+
+.signup-box>.con>.signup-title {
+	margin-top: 100px;
+}
+
+.signup-box>.con>.signup-title>span {
+	font-size: 5vh;
+	white-space: nowrap;
+	color: #7590a1;
+	font-weight: 700;
+}
+
+.signup-box>.con>.signup-title>span+span {
+	margin-left: 1rem;
+}
+
+.signup-box>.con>.signup-form {
+	margin-top: 1rem;
+}
+
+.signup-box>.con>.signup-form>div {
+	color: #ceccc0;
+	font-size: 2vh;
+	margin-bottom: 1rem;
+	white-space: nowrap;
+}
+
+.signup-box>.con>.signup-form  input {
+	padding: 0.2rem;
+	width: 50vw;
+}
+
+.signup-form .finish-btn:hover {
+	cursor: pointer;
+}
+
+.signup-box button, .signup-form .finish-btn {
+	border: none;
+	padding: 0.2rem;
+	background: #7590a1;
+	color: white;
+}
+
+@media ( max-width :800px) {
+	.signup-form input, .signup-form button {
+		border-radius: 4px;
+	}
+	.btnDupCheck__mobile {
+		display: block;
+		width: 100%;
+		margin-top: 0.5rem;
+	}
+}
+</style>
+
+
+
+
+<section>
+	<div class="signup-box con-min-width">
+		<div class="con flex">
+			<div class="signup-title flex">
+				<span><i class="fas fa-compact-disc"></i></span> <span>Sign
+					Up</span>
+			</div>
+
+			<script>
 	let DoJoinForm__submited = false;
 
 	/*인증받은 아이디*/ 
@@ -140,45 +212,57 @@
 		DoJoinForm__submited = true;
 	}
 	</script>
+			<form action="/jspCommunity/usr/member/doJoin" methods="POST"
+				onsubmit="DoJoinForm__submit(this); return false;" class="signup-form">
 
+				<input type="hidden" name="loginPwReal" />
 
-	<form action="/jspCommunity/usr/member/doJoin" methods="POST"
-		onsubmit="DoJoinForm__submit(this); return false;">
-		<input type="hidden" name="loginPwReal" />
+				<div id="loginId">
+					<div>아이디 Id</div>
+					<input type="text" name="loginId" placeholder="아이디를 입력하세요"
+						maxlength="50">
+					<button type="button" onclick="CheckDupId(this);"
+						name="btnDupCheck" class="visible-md-up">중복체크</button>
+					<button type="button" onclick="CheckDupId(this);"
+						name="btnDupCheck" class="btnDupCheck__mobile visible-sm-down">중복체크</button>
+				</div>
+				<div id="loginPw">
+					<div>비밀번호 Password</div>
+					<input type="password" name="loginPw" placeholder="비밀번호를 입력하세요"
+						maxlength="100">
+				</div>
+				<div id="loginPwConfirm">
+					<div>비밀번호 확인 Password Confirm</div>
+					<input type="password" name="loginPwConfirm"
+						placeholder="비밀번호를 확인해주세요" maxlength="100">
+				</div>
+				<div id="name">
+					<div>이름 Name</div>
+					<input type="text" name="name" placeholder="이름을 입력해주세요"
+						maxlength="30">
+				</div>
+				<div id="nickName">
+					<div>활동명 nickName</div>
+					<input type="text" name="nickName" placeholder="별명을 입력해주세요"
+						maxlength="100">
+				</div>
+				<div id="email">
+					<div>E-mail</div>
+					<input type="email" name="email" placeholder="이메일을 입력해주세요"
+						maxlength="100">
+				</div>
+				<div id="cellPhone">
+					<div>연락처 cellPhoneNo</div>
+					<input type="tel" name="cellPhone" placeholder="연락처를 입력해주세요"
+						maxlength="100">
+				</div>
 
-		<div>아이디</div>
-		<input type="text" name="loginId" id="loginId" placeholder="아이디를 입력하세요"
-			maxlength="50" />
-		<button type="button" onclick="CheckDupId(this);" name="btnDupCheck">중복체크</button>
-		<hr>
-		<div>비밀번호</div>
-		<input type="password" name="loginPw" placeholder="비밀번호를 입력하세요"
-			maxlength="100" />
-		<hr>
-		<div>비밀번호 확인</div>
-		<input type="password" name="loginPwConfirm"
-			placeholder="비밀번호를 한번 더 입력해주세요" maxlength="100" />
-		<hr>
-		<div>이름</div>
-		<input type="text" name="name" placeholder="이름을 입력하세요" maxlength="30" />
-		<hr>
-		<div>활동명</div>
-		<input type="text" name="nickName" placeholder="활동명(별명)을 입력하세요"
-			maxlength="30" />
-		<hr>
-		<div>전화번호</div>
-		<input type="tel" name="cellPhone" placeholder="연락처를 입력하세요"
-			maxlength="100" />
-		<hr>
-		<div>이메일</div>
-		<input type="email" name="email" placeholder="이메일을 입력하세요"
-			maxlength="100" />
-		<hr>
-		<input type="submit" value="전송" />
-		<button type="button" onclick="history.back();" />
-		뒤로가기
-		</button>
-	</form>
-</div>
-
+				<input class="finish-btn visible-md-up" type="submit" value="완료">
+				<input class="finish-btn finish-btn__mobile visible-sm-down"
+					type="submit" value="완료">
+			</form>
+		</div>
+	</div>
+</section>
+<!-- 섹션 끝-->
 <%@ include file="../../part/foot.jspf"%>

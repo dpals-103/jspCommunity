@@ -1,4 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<style>
+/*하단바*/
+footer{
+  height : 100px;
+}
+
+.footer{
+  height : 100%;
+}
+
+.footer > .con {
+  height : 100%;
+  align-items : center;
+  justify-content : center;
+}
+
+.footer > .con > span{
+  font-size : 1.5vh;
+  font-family : 'Lora', serif;
+  color : #9f898c;
+  white-space : nowrap;
+}
+
+</style>
+   <!-- 하단바 시작-->
+   <footer>
+     <div class="footer con-min-width">
+       <div class="con flex">
+         <span>ⓒ2021.Jeya All Rights Reserved
+           Thank you for [our record]♬</span>
+       </div>
+     </div>
+   </footer>
+   <!-- 하단바 끝-->
+    </div>
+    
 </body>
 </html>

@@ -12,6 +12,7 @@ import jspCommunity.service.MemberService;
 
 public class Container {
 
+	
 	public static MailService mailService;
 	public static UsrHomeController homeController;
 	public static ArticleService articleService; 
@@ -23,13 +24,14 @@ public class Container {
 	public static AdmMemberController admMemberController; 
 	
 	static {
+	
 		articleDao = new ArticleDao();
 		memberDao = new MemberDao();
 		
 		mailService = new MailService(); 
 		articleService = new ArticleService();
-		memberService = new MemberService(); 
-		
+		memberService = new MemberService();
+	
 		
 		articleController = new UsrArticleController(); 
 		memberController = new UsrMemberController();
