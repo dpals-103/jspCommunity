@@ -28,17 +28,8 @@ section {
 	width: 100%;
 	justify-content: space-between;
 	margin-bottom: 1rem;
-}
-
-.list-search>span {
-	color: #ceccc0;
-}
-
-.list-search {
-	width: 100%;
-	justify-content: space-between;
-	margin-bottom: 1rem;
 	white-space: nowrap;
+	align-items : center;
 }
 
 .list-search>span {
@@ -47,8 +38,15 @@ section {
 	margin-right: 2.5rem;
 }
 
-.list-search #search-box {
-	width: 30vw;
+.list-search #search-box{
+	width: 25vw;
+	height : 3vh;
+	vertical-align: bottom;
+}
+.list-search #search-btn,
+.list-search select{
+	height : 3vh;
+	vertical-align: bottom;
 }
 
 .list-box th, .list-box td span, .list-box td a {

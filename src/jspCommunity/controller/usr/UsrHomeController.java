@@ -21,9 +21,6 @@ public class UsrHomeController {
 
 	public static String showMain(HttpServletRequest req, HttpServletResponse resp) {
 		
-		List<Board> boards = articleService.getBoards(); 
-		
-		req.setAttribute("boards", boards);
 		return "usr/home/main";
 	}
 

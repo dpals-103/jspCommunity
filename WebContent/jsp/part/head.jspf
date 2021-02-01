@@ -1,19 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <html lang="ko">
 <head>
 <!-- 제이쿼리 -->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-<!-- 제이쿼리 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- 폰트어썸 -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
@@ -101,6 +96,7 @@ header {
 }
 
 /*헤더--계정*/
+.top-bar>.con>.top-bar__account>ul>li,
 .top-bar>.con>.top-bar__account>ul>li>a {
 	color: #7590a1;
 	display: flex;
@@ -207,7 +203,8 @@ header {
 									<c:forEach items="${boards}" var="board">
 										<li><a href="../article/list?boardId=${board.id}">${board.category}</a></li>
 									</c:forEach>
-								</ul></li>
+								</ul>
+								</li>
 							<li><a href="../article/list">Diary</a></li>
 						</ul>
 					</nav>
@@ -221,8 +218,8 @@ header {
 
 							<c:if test="${isLogined}">
 								<li>${loginedMember.nickName}님</li>
-								<li><a href="../member/logout"></a>Sign Out</li>
-								<li><a href="../member/modify"></a>Modify</li>
+								<li><a href="../member/logout">Sign Out</a></li>
+								<li><a href="../member/modify">Modify</a></li>
 							</c:if>
 
 						</ul>
@@ -258,8 +255,16 @@ header {
 						<nav class="side-bar__mobile visible-sm-down">
 							<ul class="flex">
 
+							<c:if test="${isLogined == false}">
 								<li><a href="../member/join">Sign Up</a></li>
 								<li><a href="../member/login">Sign In</a></li>
+							</c:if>
+
+							<c:if test="${isLogined}">
+								<li><a href="../member/logout">Sign Out</a></li>
+								<li><a href="../member/modify">Modify</a></li>
+							</c:if>
+							
 								<li><a href="">Playlist</a>
 									<ul>
 										<c:forEach items="${boards}" var="board">

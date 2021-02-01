@@ -17,11 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import jspCommunity.container.Container;
+import jspCommunity.dto.Board;
 import jspCommunity.dto.Member;
 import jspCommunity.mysqlUtil.MysqlUtil;
 import jspCommunity.util.Util;
-
-
 
 public abstract class DispatcherServlet extends HttpServlet {
 
@@ -69,8 +68,9 @@ public abstract class DispatcherServlet extends HttpServlet {
 			return null;
 		}
 
-		MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
-		// MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+		// MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
+
+		MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
 
 		String controllerTypeName = requestUriBits[2]; // usr
 		String controllerName = requestUriBits[3]; // article
@@ -110,8 +110,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 		needToLogin.add("/usr/article/modify");
 		needToLogin.add("/usr/article/doModift");
 		needToLogin.add("/usr/article/doDelete");
-		
-		
+
 		if (needToLogin.contains(actionUrl)) {
 
 			if ((boolean) req.getAttribute("isLogined") == false) {
@@ -121,15 +120,14 @@ public abstract class DispatcherServlet extends HttpServlet {
 				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
 				rd.forward(req, resp);
 			}
-		} 
-		
-		
-		needToLogout.add("/usr/member/doLogin"); 
-		needToLogout.add("/usr/member/join"); 
-		needToLogout.add("/usr/member/doJoin"); 
-		needToLogout.add("/usr/member/findLoginId"); 
-		needToLogout.add("/usr/member/doFindLoginId"); 
-		
+		}
+
+		needToLogout.add("/usr/member/doLogin");
+		needToLogout.add("/usr/member/join");
+		needToLogout.add("/usr/member/doJoin");
+		needToLogout.add("/usr/member/findLoginId");
+		needToLogout.add("/usr/member/doFindLoginId");
+
 		if (needToLogout.contains(actionUrl)) {
 
 			if ((boolean) req.getAttribute("isLogined") == true) {
@@ -139,15 +137,17 @@ public abstract class DispatcherServlet extends HttpServlet {
 				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
 				rd.forward(req, resp);
 			}
-		} 
-		
-
+		}
 
 		// 로그인 필요 필터링 인터셉터 끝
 		Map rs = new HashMap<>();
 
 		rs.put("controllerName", controllerName);
 		rs.put("actionMethodsName", actionMethodsName);
+
+		List<Board> boards = Container.articleService.getBoards();
+
+		req.setAttribute("boards", boards);
 
 		return rs;
 	}

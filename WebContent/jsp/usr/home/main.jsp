@@ -23,7 +23,7 @@ section{
 .main-box > .con > .main-box__title{
   flex-direction :column;
   align-items: center;
-  margin-top : 130px;
+  margin-top : 150px;
 }
 
 .main-box > .con > .main-box__title > #title{

@@ -5,11 +5,10 @@
 
 <c:set var="pageTitle" value="회원가입" />
 
-<%@ include file="../../part/head.jspf"%>
-
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
+<%@ include file="../../part/head.jspf"%>
 
 <style>
 section {
@@ -70,21 +69,22 @@ section {
 	}
 	.btnDupCheck__mobile {
 		display: block;
-		width: 100%;
+		width : 50vw;
 		margin-top: 0.5rem;
 	}
 }
 </style>
 
 
-
-
 <section>
 	<div class="signup-box con-min-width">
 		<div class="con flex">
+
 			<div class="signup-title flex">
-				<span><i class="fas fa-compact-disc"></i></span> <span>Sign
-					Up</span>
+				<span>
+					<i class="fas fa-compact-disc"></i>
+				</span>
+				<span>Sign Up</span>
 			</div>
 
 			<script>
@@ -142,9 +142,9 @@ section {
 
 			return false; 
 		}
+
 		
 		form.loginPw.value = form.loginPw.value.trim();
-	
 		if ( form.loginPw.value.length == 0 ) {
 			alert('로그인 비밀번호를 입력해주세요.');
 			form.loginPw.focus();
@@ -153,7 +153,6 @@ section {
 		}
 		
 		form.loginPwConfirm.value = form.loginPwConfirm.value.trim();
-	
 		if ( form.loginPwConfirm.value.length == 0 ) {
 			alert('로그인 비밀번호 확인을 입력해주세요.');
 			form.loginPwConfirm.focus();
@@ -167,9 +166,10 @@ section {
 			
 			return;
 		}
+
+		
 		
 		form.name.value = form.name.value.trim();
-	
 		if ( form.name.value.length == 0 ) {
 			alert('이름을 입력해주세요.');
 			form.name.focus();
@@ -207,13 +207,15 @@ section {
 		form.loginPwReal.value = sha256(form.loginPw.value); 
 		form.loginPw.value =""; 
 		form.loginPwConfirm.value =""; 
+
 		
 		form.submit();
 		DoJoinForm__submited = true;
 	}
 	</script>
 			<form action="/jspCommunity/usr/member/doJoin" methods="POST"
-				onsubmit="DoJoinForm__submit(this); return false;" class="signup-form">
+				onsubmit="DoJoinForm__submit(this); return false;"
+				class="signup-form">
 
 				<input type="hidden" name="loginPwReal" />
 

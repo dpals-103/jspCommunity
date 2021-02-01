@@ -152,6 +152,9 @@ section{
 			<form action="/jspCommunity/usr/member/doLogin" methods="POST"
 				onsubmit="DoLoginForm__submit(this); return false"
 				class="signin-form">
+				
+				<input type="hidden" name="loginPwReal"/>
+				
 				<div id="loginId">
 					<div>아이디 Id</div>
 					<input type="text" name="loginId" placeholder="아이디를 입력하세요"
@@ -167,8 +170,9 @@ section{
 					type="submit" value="완료">
 			</form>
 			<div class="find-account-btn">
-				<a href=""><span>아이디 찾기</span></a> <span>/</span> <a href=""><span>비밀번호
-						찾기</span></a>
+				<a href="../member/findLoginId"><span>아이디 찾기</span></a>
+				<span>/</span> 
+				<a href="../member/findLoginPw"><span>비밀번호 찾기</span></a>
 
 			</div>
 
