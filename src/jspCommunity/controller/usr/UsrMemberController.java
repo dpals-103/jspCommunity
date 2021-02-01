@@ -42,6 +42,7 @@ public class UsrMemberController {
 
 		int memberId = memberService.join(joinArgs);
 
+		
 		req.setAttribute("alertMsg", "가입되었습니다");
 		req.setAttribute("replaceUrl", String.format("joinCheck?loginId=%s&memberId=%d", loginId, memberId));
 

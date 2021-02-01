@@ -111,6 +111,7 @@ section {
 .list-box>.con>.write-btn > a:hover{
 	background-color : #9f898c;
 	color : white;
+	border-radius: 4px;
 }
 
 .list-box>.con>.write-btn > a:active{
@@ -147,6 +148,10 @@ section {
 	}
 	.list-search form {
 		margin-top: 1rem;
+	}
+	
+	.list-box>.con>.write-btn>a{
+		padding : 1vh 30vw;
 	}
 }
 </style>
@@ -232,7 +237,7 @@ section {
 				<tbody>
 					<c:forEach items="${articles}" var="article">
 						<tr>
-							<td><a href="detail?boardId=${board.id}&id=${article.id}">${article.title}</a></td>
+							<td><a class="list-title" href="detail?boardId=${board.id}&id=${article.id}">${article.title}</a></td>
 							<td><span class="list-writer">${article.extra__writer}</span></td>
 							<td><span class="list-count">${article.count}</span></td>
 							<td><span class="list-regDate">${article.regDate}</span></td>
@@ -255,12 +260,14 @@ section {
 				</tr>
 				</tbody>
 			</table>
+			
 			<div class="flex write-btn">
-				<a
-					href="write?boardId=${param.boardId}&memberId=${sessionScope.loginedMemberId}">글쓰기</a>
+				<a href="write?boardId=${param.boardId}&memberId=${sessionScope.loginedMemberId}">글쓰기</a>
 			</div>
+			
+			
 			<div class="list-paging">
-
+			
 				<c:if test="${needToShowPrevPageBox}">
 					<c:set var="aUrl"
 						value="?boardId=${param.boardId}&page=${prevPage}&searchKeywordType=${param.searchKeywordType}&searchKeyword=${param.searchKeyword}" />

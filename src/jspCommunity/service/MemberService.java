@@ -14,12 +14,11 @@ import jspCommunity.util.Util;
 public class MemberService {
 	private static MemberDao memberDao;
 	private static MailService mailService;
-	
 
 	public MemberService() {
 		memberDao = Container.memberDao;
 		mailService = Container.mailService;
-		
+
 	}
 
 	public static List<Member> getMembers() {
@@ -69,10 +68,10 @@ public class MemberService {
 
 		// 고객의 패스워드를 지금 생성한 임시 패스워드로 변경하기
 		setTempPassword(actor, tempPassword);
-		
-		String resultMsg = "고객님의 새 임시 패스워드가 메일로 발송되었습니다"; 
 
-		return new ResultData("S-1",resultMsg,"email",actor.getEmail());
+		String resultMsg = "고객님의 새 임시 패스워드가 메일로 발송되었습니다";
+
+		return new ResultData("S-1", resultMsg, "email", actor.getEmail());
 	}
 
 	private void setTempPassword(Member actor, String tempPassword) {
@@ -83,12 +82,12 @@ public class MemberService {
 		modifyParam.put("loginPw", Util.sha256(tempPassword));
 
 		modify(modifyParam);
-		
-		
+
 	}
 
 	public void modify(Map<String, Object> param) {
 		memberDao.modify(param);
 	}
+
 
 }
