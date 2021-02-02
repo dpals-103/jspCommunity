@@ -68,9 +68,9 @@ public abstract class DispatcherServlet extends HttpServlet {
 			return null;
 		}
 
-		// MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
+		MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
 
-		MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+		//MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
 
 		String controllerTypeName = requestUriBits[2]; // usr
 		String controllerName = requestUriBits[3]; // article
@@ -82,6 +82,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 		boolean isLogined = false;
 		int loginedMemberId = 0;
 		Member loginedMember = null;
+		boolean isTempPassword = false;
 
 		HttpSession session = req.getSession();
 
@@ -89,11 +90,13 @@ public abstract class DispatcherServlet extends HttpServlet {
 			isLogined = true;
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = Container.memberService.getMember(loginedMemberId);
+			isTempPassword = Container.memberService.getIsUsingTempPassword(loginedMemberId);
 		}
 
 		req.setAttribute("isLogined", isLogined);
 		req.setAttribute("loginedMemberId", loginedMemberId);
 		req.setAttribute("loginedMember", loginedMember);
+		req.setAttribute("isTempPassword", isTempPassword);
 
 		// 데이터 추가 인터셉터 끝
 

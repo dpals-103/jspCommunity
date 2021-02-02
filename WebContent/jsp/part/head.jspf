@@ -12,6 +12,7 @@
 <!-- 폰트어썸 -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+	
 <!-- 토스트 ui 시작 -->
 <!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
 <script
@@ -50,6 +51,26 @@ header {
 
 .top-bar {
 	height: 100%;
+}
+
+.top-bar > #TempPasswordMsg{
+	border : solid 0.5px #ceccc0;
+	text-align : center;
+}
+
+.top-bar > #TempPasswordMsg > a{	
+	display : block;
+	color : #ceccc0;
+}
+
+.top-bar > #TempPasswordMsg > a:hover{	
+	color : #282828;
+	background-color : #ceccc0;
+}
+
+.top-bar > #TempPasswordMsg > a:active{	
+	color : #282828;
+	background-color : #ceccc0;
 }
 
 .top-bar>.con {
@@ -185,13 +206,20 @@ header {
 	color: #9f898c;
 }
 </style>
+
+
 </head>
 <body>
 
 	<div class="content flex">
 		<!-- 헤더 탑바 시작-->
 		<header>
-			<div class="top-bar con-min-width ">
+			<div class="top-bar con-min-width ">	
+			
+			<c:if test="${isTempPassword}">
+				<nav id="TempPasswordMsg"><a href="../member/modify">현재 임시패스워드를 사용중 입니다. 비밀번호를 변경해주세요</a></nav>
+			</c:if>
+			
 				<div class="con flex">
 					<a href="../home/main" class="logo"> <span>our record</span>
 					</a>
