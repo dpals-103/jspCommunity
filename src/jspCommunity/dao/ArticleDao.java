@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import jspCommunity.dto.Article;
+import jspCommunity.dto.ArticleLikes;
 import jspCommunity.dto.Board;
 import jspCommunity.mysqlUtil.MysqlUtil;
 import jspCommunity.mysqlUtil.SecSql;
@@ -188,8 +189,9 @@ public class ArticleDao {
 		return MysqlUtil.selectRowIntValue(sql);
 	}
 
-	public List<Article> getArticlesBySearch(int boardId, int limitStart, int limitCount , String searchKeyword, String searchKeywordType) {
-	
+	public List<Article> getArticlesBySearch(int boardId, int limitStart, int limitCount, String searchKeyword,
+			String searchKeywordType) {
+
 		List<Article> articles = new ArrayList<>();
 
 		SecSql sql = new SecSql();
@@ -206,7 +208,7 @@ public class ArticleDao {
 		if (boardId != 0) {
 			sql.append("where A.boardId=?", boardId);
 		}
-		
+
 		if (searchKeyword != null) {
 			if (searchKeywordType == null || searchKeywordType.equals("title")) {
 				sql.append("and title like concat('%', ? '%')", searchKeyword);
@@ -219,9 +221,9 @@ public class ArticleDao {
 		}
 
 		sql.append("order by A.id desc");
-		
-		if( limitCount != -1) {
-			sql.append("limit ?, ?",limitStart, limitCount); 
+
+		if (limitCount != -1) {
+			sql.append("limit ?, ?", limitStart, limitCount);
 		}
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
@@ -233,4 +235,108 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public Object increaseCount(int boardId, int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("update article");
+		sql.append("set count = count + 1");
+		sql.append("where boardId = ?", boardId);
+		sql.append("and id = ?", id);
+
+		return MysqlUtil.update(sql);
+	}
+
+	public ArticleLikes getLikedArticle(int memberId, int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("select *");
+		sql.append("from articleLikes");
+		sql.append("where id = ?", id);
+		sql.append("and memberId= ?", memberId);
+		sql.append("and point= 1");
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+
+		if (map.isEmpty()) {
+			return null;
+		}
+
+		return new ArticleLikes(map);
+
+	}
+
+	public ArticleLikes getDislikedArticle(int memberId, int id) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("select *");
+		sql.append("from articleLikes");
+		sql.append("where id = ?", id);
+		sql.append("and memberId= ?", memberId);
+		sql.append("and point= -1");
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+
+		if (map.isEmpty()) {
+			return null;
+		}
+
+		return new ArticleLikes(map);
+	}
+
+	public Object cancelDislike(int id, int memberId) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("delete");
+		sql.append("from articleLikes");
+		sql.append("where id = ?", id);
+		sql.append("and memberId= ?", memberId);
+		sql.append("and point= -1");
+
+		return MysqlUtil.delete(sql);
+	}
+
+	public Object doLike(int memberId, int id) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("INSERT INTO articleLikes");
+		sql.append("set articleId = ?", id);
+		sql.append(",memberId= ?", memberId);
+		sql.append(",point= 1");
+		sql.append(",regDate=now()");
+
+		return MysqlUtil.insert(sql);
+	}
+
+	public int getLikeCount(int id) {
+
+		SecSql sql = new SecSql();
+
+		sql.append("select *");
+		sql.append("from articleLikes");
+		sql.append("where articleId = ?", id);
+		sql.append("and point=1");
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+
+		if (map.isEmpty()) {
+			return 0;
+		} else {
+
+			sql.append("select sum(point)");
+			sql.append("from articleLikes");
+			sql.append("where articleId = ?", id);
+			sql.append("where point=1");
+
+			int likeCount = MysqlUtil.selectRowIntValue(sql);
+
+			if (likeCount == -1) {
+				return likeCount = 0;
+			}
+
+			return likeCount;
+		}
+	}
 }

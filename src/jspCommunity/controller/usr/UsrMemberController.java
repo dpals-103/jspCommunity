@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import jspCommunity.container.Container;
 import jspCommunity.controller.Controller;
+import jspCommunity.dto.Article;
 import jspCommunity.dto.Member;
 import jspCommunity.dto.ResultData;
 import jspCommunity.service.MemberService;
@@ -111,8 +112,25 @@ public class UsrMemberController extends Controller {
 		}
 
 		session.setAttribute("loginedMemberId", member.getId());
+		
+		String replaceUrl = "../home/main"; 
+		String alertMsg =  String.format("%s님 환영합니다.", member.getLoginId());
+		
+		
+		/*90일 이상 사용한 비밀번호 변경 권유*/
+		boolean isNeedToModifyPassword = memberService.isNeedToModifyPassword(member.getId()); 
+		
+		if(isNeedToModifyPassword) {
+			alertMsg = String.format("%s님! 비밀번호 변경일로부터 90일이 지났습니다. 새로운 비밀번호로 변경해주세요", member.getNickName());
+			replaceUrl = "../member/modify"; 
+		}
+		
+	
+		if(Util.isEmpty(req.getParameter("afterLoginUrl")) == false) {
+			replaceUrl = req.getParameter("afterLoginUrl");
+		}
 
-		return msgAndReplace(req, String.format("%s님 환영합니다.", member.getLoginId()), "../home/main");
+		return msgAndReplace(req, alertMsg, replaceUrl);
 	}
 
 	public String doLogout(HttpServletRequest req, HttpServletResponse resp) {
@@ -143,8 +161,7 @@ public class UsrMemberController extends Controller {
 		
 		return json(req,new ResultData(resultCode, msg, "loginId", loginId));
 	}
-
-	
+		
 
 	public String showFindLoginId(HttpServletRequest req, HttpServletResponse resp) {
 		return "usr/member/findLoginId";

@@ -5,6 +5,7 @@ import java.util.List;
 import jspCommunity.container.Container;
 import jspCommunity.dao.ArticleDao;
 import jspCommunity.dto.Article;
+import jspCommunity.dto.ArticleLikes;
 import jspCommunity.dto.Board;
 
 public class ArticleService {
@@ -52,6 +53,30 @@ public class ArticleService {
 
 	public List<Article> getArticlesBySearch(int boardId,int limitStart, int limitCount , String searchKeyword, String searchKeywordType) {
 		return articleDao.getArticlesBySearch(boardId, limitStart, limitCount, searchKeyword, searchKeywordType);
+	}
+
+	public Object increaseCount(int boardId, int id) {
+		return articleDao.increaseCount(boardId, id); 
+	}
+
+	public ArticleLikes getLikedArticle(int memberId, int id) {
+		return articleDao.getLikedArticle(memberId, id);
+	}
+
+	public ArticleLikes getDislikedArticle(int memberId, int id) {
+		return articleDao.getDislikedArticle(memberId, id);
+	}
+
+	public Object cancelDislike(int id, int memberId) {
+		return articleDao.cancelDislike(id,memberId);
+	}
+
+	public Object doLike(int memberId, int id) {
+		return articleDao.doLike(memberId,id);
+	}
+
+	public int getLikeCount(int id) {
+		return articleDao.getLikeCount(id); 
 	}
 
 }

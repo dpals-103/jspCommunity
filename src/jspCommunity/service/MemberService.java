@@ -95,7 +95,39 @@ public class MemberService {
 	}
 
 	public void modify(Map<String, Object> param) {
+		if(param.get("loginPw") != null) {
+			setPasswordModifiedNow((int)param.get("id")); 
+		}
+		
+		
 		memberDao.modify(param);
+	}
+
+	private void setPasswordModifiedNow(int actorId) {
+		attrService.setValue("member__" + actorId + "__extra__modifiedDate", Util.getNowDateStr(), null);
+	}
+
+	public int getOldPasswordDays() {
+		return 90;
+	}
+	
+	public boolean isNeedToModifyPassword(int actorId) {
+		String date = attrService.getValue("member__" + actorId + "__extra__modifiedDate");
+		
+		if (Util.isEmpty(date)) {
+			return true; 
+		}
+		
+		int pass = Util.getPassedSecondsFrom(date);
+		
+		int OldPasswordDays = getOldPasswordDays();
+		
+		if (pass > OldPasswordDays * 60 * 60 * 24) {
+			return true; 
+		}
+		
+		return false; 
+		
 	}
 
 

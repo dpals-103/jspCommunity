@@ -154,6 +154,8 @@ section{
 				class="signin-form">
 				
 				<input type="hidden" name="loginPwReal"/>
+				<input type="hidden" name="afterLoginUrl" value="${param.afterLoginUrl}"/>
+				
 				
 				<div id="loginId">
 					<div>아이디 Id</div>

@@ -7,6 +7,11 @@
 
 <%@ include file="../../part/head.jspf" %>
 
+<style>
+	*{
+	color : #ceccc0;
+	}
+</style>
 
 	<h1>${board.category} 게시판</h1>
 	<h1>${article.id}번글 상세보기</h1>
@@ -25,20 +30,41 @@
 		${article.regDate}<br>
 		<hr>
 	</div>
+	
+	<script>
+		function callDoLike(el) {
+
+			const id = ${article.id}; 
+			
+			$.post(
+					"doLike?id=${article.id}", 
+					
+			function(data) {
+				if (data.msg) {
+					alert(data.msg);
+				}
+			}, "json");
+		}
+	</script>
+	
+	<div>
+		<a href="" onclick="callDoLike(this); return false;">좋아요 ${like}</a>
+		<span></span>
+		<input  type="submit" name ="dislike" value="싫어요" />
+	</div>
+	
+	
 	<div>
 		<a href="list?boardId=${article.boardId}">리스트로 돌아가기</a>
 	</div>
 
-	
 	<c:if test="${sessionScope.loginedMemberId == article.memberId }">
-	
-	<div>
-	<a href="modify?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">수정하기</a>
-	</div>
-	<div>
-	<a href="/jspCommunity/usr/article/doDelete?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">삭제하기</a>
-	</div>
-
+		<div>
+			<a href="modify?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">수정하기</a>
+		</div>
+		<div>
+			<a href="/jspCommunity/usr/article/doDelete?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">삭제하기</a>
+		</div>
 	</c:if>
 	
 	
