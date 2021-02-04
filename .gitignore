@@ -4,5 +4,5 @@ build/
 .project
 target/
 bin/
-.factiorypath
+.factorypath
 WebContent/META-INF/config.json
