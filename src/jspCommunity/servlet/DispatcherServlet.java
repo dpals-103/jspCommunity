@@ -20,6 +20,7 @@ import jspCommunity.container.Container;
 import jspCommunity.dto.Board;
 import jspCommunity.dto.Member;
 import jspCommunity.mysqlUtil.MysqlUtil;
+import jspCommunity.service.ArticleService;
 import jspCommunity.util.Util;
 
 public abstract class DispatcherServlet extends HttpServlet {
@@ -36,6 +37,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 	}
 
 	public void run(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		
 		Map<String, Object> doBeforeActionRs = doBeforeAction(req, resp);
 
 		if (doBeforeActionRs == null) {
@@ -57,6 +60,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 	private Map<String, Object> doBeforeAction(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+	
+		
 		resp.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html; charset=UTF-8");
 
@@ -124,6 +129,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 		needToLogin.add("/usr/article/modify");
 		needToLogin.add("/usr/article/doModift");
 		needToLogin.add("/usr/article/doDelete");
+		needToLogin.add("/usr/article/doLike");
+		needToLogin.add("/usr/article/doDisLike");
 
 		if (needToLogin.contains(actionUrl)) {
 

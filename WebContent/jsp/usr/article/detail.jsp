@@ -48,9 +48,9 @@
 	</script>
 	
 	<div>
-		<a href="" onclick="callDoLike(this); return false;">좋아요 ${like}</a>
+		<a href="doLike?boardId=?${board.id}memberId=${loginedMemberId}&id=${article.id}">좋아요 ${like}</a>
 		<span></span>
-		<input  type="submit" name ="dislike" value="싫어요" />
+		<a href="doDislike?boardId=?${board.id}memberId=${loginedMemberId}&id=${article.id}">싫어요 ${dislike}</a>
 	</div>
 	
 	

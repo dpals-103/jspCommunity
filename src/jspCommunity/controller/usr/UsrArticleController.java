@@ -9,8 +9,8 @@ import javax.servlet.http.HttpSession;
 import jspCommunity.container.Container;
 import jspCommunity.controller.Controller;
 import jspCommunity.dto.Article;
-import jspCommunity.dto.ArticleLikes;
 import jspCommunity.dto.Board;
+import jspCommunity.dto.Like;
 import jspCommunity.dto.Member;
 import jspCommunity.dto.ResultData;
 import jspCommunity.service.ArticleService;
@@ -99,16 +99,13 @@ public class UsrArticleController extends Controller {
 		int id = Util.getAsInt(req.getParameter("id"), 0);
 		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
 		Board board = articleService.getBoard(boardId);
-		
+
 		Article article = articleService.getArticle(id);
 		int like = articleService.getLikeCount(id);
+		int dislike = articleService.getDislikeCount(id);
 
 		if (article == null) {
 			return msgAndBack(req, id + "번 게시물은 존재하지 않습니다.");
-		}
-
-		if (board == null) {
-			return msgAndBack(req, "해당 게시판은 존재하지 않습니다");
 		}
 
 		/* 조회수증가 */
@@ -118,41 +115,46 @@ public class UsrArticleController extends Controller {
 		req.setAttribute("boardId", boardId);
 		req.setAttribute("board", board);
 		req.setAttribute("like", like);
+		req.setAttribute("dislike", dislike);
 
 		return "/usr/article/detail";
 	}
 
 	public String doLike(HttpServletRequest req, HttpServletResponse resp) {
 
-		System.out.println("들어옴");
-		
 		int id = Util.getAsInt(req.getParameter("id"), 0);
-		
-		System.out.println(id);
-		
+		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
 		int memberId = (int) req.getAttribute("loginedMemberId");
 
-		ArticleLikes likedArticle = articleService.getLikedArticle(memberId, id);
-		ArticleLikes dislikedArticle = articleService.getDislikedArticle(memberId, id);
-
-		if (dislikedArticle != null) {
-			articleService.cancelDislike(id, memberId);
-		}
-
-		String resultCode = null;
-		String msg = null;
-		String data = "";
+		Like likedArticle = articleService.getLikedArticle(memberId, id);
 
 		if (likedArticle != null) {
-			resultCode = "F-1";
-			msg = "이미 좋아요를 눌러주셨습니다.";
+			articleService.doCanclelike(memberId, id);
+			return msgAndReplace(req, "좋아요를 취소합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
 		} else {
 			articleService.doLike(memberId, id);
-			resultCode = "S-1";
-			msg = "좋아요를 누르셨습니다";
+			return msgAndReplace(req, "이 게시글을 좋아합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
 		}
 
-		return json(req, new ResultData(resultCode, msg, "id", id));
+	}
+
+	public String doDislike(HttpServletRequest req, HttpServletResponse resp) {
+		
+		int id = Util.getAsInt(req.getParameter("id"), 0);
+		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
+		int memberId = (int) req.getAttribute("loginedMemberId");
+
+		Like dislikedArticle = articleService.getDislikedArticle(memberId, id);
+
+		if (dislikedArticle != null) {
+			articleService.doCancleDislike(memberId, id);
+			return msgAndReplace(req, "싫어요를 취소합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
+		} else {
+			articleService.doDislike(memberId, id);
+			return msgAndReplace(req, "이 게시글을 싫어합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
+		}
+
+
 	}
 
 	public String showWrite(HttpServletRequest req, HttpServletResponse resp) {
@@ -262,4 +264,5 @@ public class UsrArticleController extends Controller {
 
 		return msgAndReplace(req, "삭제되었습니다", String.format("list?boardId=%d", boardId));
 	}
+
 }

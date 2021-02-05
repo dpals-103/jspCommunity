@@ -1,6 +1,5 @@
 package jspCommunity.mysqlUtil;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -161,9 +160,15 @@ public class MysqlUtil {
 		Map<String, Object> row = selectRow(sql);
 
 		for (String key : row.keySet()) {
-			return (int) row.get(key);
+			
+			if(row.get(key) == null) {
+				return 0;
+			}
+			
+			return Integer.parseInt(String.valueOf(row.get(key)));
 		}
 
+		
 		return -1;
 	}
 

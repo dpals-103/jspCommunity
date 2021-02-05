@@ -35,7 +35,10 @@ public class MemberService {
 	}
 
 	public int join(Map<String, Object> args) {
-		return memberDao.join(args);
+		int id = memberDao.join(args);
+		setPasswordModifiedNow(id); 
+		
+		return id; 
 	}
 
 	public Member getMemberByloginId(String loginId) {
@@ -115,7 +118,7 @@ public class MemberService {
 		String date = attrService.getValue("member__" + actorId + "__extra__modifiedDate");
 		
 		if (Util.isEmpty(date)) {
-			return true; 
+			return false; 
 		}
 		
 		int pass = Util.getPassedSecondsFrom(date);

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import jspCommunity.dto.Article;
-import jspCommunity.dto.ArticleLikes;
 import jspCommunity.dto.Board;
+import jspCommunity.dto.Like;
 import jspCommunity.mysqlUtil.MysqlUtil;
 import jspCommunity.mysqlUtil.SecSql;
 
@@ -246,14 +246,15 @@ public class ArticleDao {
 		return MysqlUtil.update(sql);
 	}
 
-	public ArticleLikes getLikedArticle(int memberId, int id) {
+	public Like getLikedArticle(int memberId, int id) {
 		SecSql sql = new SecSql();
 
 		sql.append("select *");
-		sql.append("from articleLikes");
-		sql.append("where id = ?", id);
+		sql.append("from `like`");
+		sql.append("where articleId = ?", id);
 		sql.append("and memberId= ?", memberId);
-		sql.append("and point= 1");
+		sql.append("and relTypeCode='like'");
+		sql.append("and `point`= 1");
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
 
@@ -261,19 +262,20 @@ public class ArticleDao {
 			return null;
 		}
 
-		return new ArticleLikes(map);
+		return new Like(map);
 
 	}
 
-	public ArticleLikes getDislikedArticle(int memberId, int id) {
+	public Like getDislikedArticle(int memberId, int id) {
 
 		SecSql sql = new SecSql();
 
 		sql.append("select *");
-		sql.append("from articleLikes");
-		sql.append("where id = ?", id);
+		sql.append("from `like`");
+		sql.append("where articleId = ?", id);
 		sql.append("and memberId= ?", memberId);
-		sql.append("and point= -1");
+		sql.append("and relTypeCode='like'");
+		sql.append("and `point` = -1");
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
 
@@ -281,30 +283,19 @@ public class ArticleDao {
 			return null;
 		}
 
-		return new ArticleLikes(map);
+		return new Like(map);
 	}
 
-	public Object cancelDislike(int id, int memberId) {
-
-		SecSql sql = new SecSql();
-
-		sql.append("delete");
-		sql.append("from articleLikes");
-		sql.append("where id = ?", id);
-		sql.append("and memberId= ?", memberId);
-		sql.append("and point= -1");
-
-		return MysqlUtil.delete(sql);
-	}
 
 	public Object doLike(int memberId, int id) {
 
 		SecSql sql = new SecSql();
 
-		sql.append("INSERT INTO articleLikes");
+		sql.append("INSERT INTO `like`");
 		sql.append("set articleId = ?", id);
 		sql.append(",memberId= ?", memberId);
-		sql.append(",point= 1");
+		sql.append(",relTypeCode='like'");
+		sql.append(",`point` = 1");
 		sql.append(",regDate=now()");
 
 		return MysqlUtil.insert(sql);
@@ -314,29 +305,111 @@ public class ArticleDao {
 
 		SecSql sql = new SecSql();
 
-		sql.append("select *");
-		sql.append("from articleLikes");
+		sql.append("select sum(point)");
+		sql.append("from `like`");
 		sql.append("where articleId = ?", id);
+		sql.append("and relTypeCode='like' ");
 		sql.append("and point=1");
 
-		Map<String, Object> map = MysqlUtil.selectRow(sql);
+		List<Map<String, Object>> map = MysqlUtil.selectRows(sql);
 
 		if (map.isEmpty()) {
 			return 0;
-		} else {
-
-			sql.append("select sum(point)");
-			sql.append("from articleLikes");
-			sql.append("where articleId = ?", id);
-			sql.append("where point=1");
-
-			int likeCount = MysqlUtil.selectRowIntValue(sql);
-
-			if (likeCount == -1) {
-				return likeCount = 0;
-			}
-
-			return likeCount;
 		}
+
+		SecSql count = new SecSql();
+
+		count.append("select sum(point)");
+		count.append("from `like`");
+		count.append("where articleId = ?", id);
+		count.append("and relTypeCode= 'like'");
+		count.append("and `point`=1");
+
+		int likeCount = MysqlUtil.selectRowIntValue(count);
+		
+		
+		if (likeCount == 0) {
+			return 0; 
+		}
+		else if (likeCount < 0) {
+			return 0;
+		}
+		
+		return likeCount;
+	}
+
+	public Object doCanclelike(int memberId, int id) {
+		
+		SecSql sql = new SecSql();
+
+		sql.append("delete from `like`");
+		sql.append("where articleId = ?", id);
+		sql.append("and memberId= ?", memberId);
+		sql.append("and `point` = 1");
+
+		return MysqlUtil.delete(sql);
+		
+	}
+
+	public Object doCancleDislike(int memberId, int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("delete from `like`");
+		sql.append("where articleId = ?", id);
+		sql.append("and memberId= ?", memberId);
+		sql.append(",relTypeCode='dislike'");
+		sql.append("and `point` = 1");
+
+		return MysqlUtil.delete(sql);
+	}
+
+	public Object doDislike(int memberId, int id) {
+		SecSql sql = new SecSql();
+
+		sql.append("INSERT INTO `like`");
+		sql.append("set articleId = ?", id);
+		sql.append(",memberId= ?", memberId);
+		sql.append(",relTypeCode='dislike'");
+		sql.append(",`point` = 1");
+		sql.append(",regDate=now()");
+
+		return MysqlUtil.insert(sql);
+	}
+
+	public int getDislikeCount(int id) {
+		
+		SecSql sql = new SecSql();
+
+		sql.append("select sum(point)");
+		sql.append("from `like`");
+		sql.append("where articleId = ?", id);
+		sql.append("and relTypeCode='dislike' ");
+		sql.append("and point=1");
+
+		List<Map<String, Object>> map = MysqlUtil.selectRows(sql);
+
+		if (map.isEmpty()) {
+			return 0;
+		}
+
+		SecSql count = new SecSql();
+
+		count.append("select sum(point)");
+		count.append("from `like`");
+		count.append("where articleId = ?", id);
+		count.append("and relTypeCode= 'dislike'");
+		count.append("and `point`=1");
+
+		int dislikeCount = MysqlUtil.selectRowIntValue(count);
+		
+		
+		if (dislikeCount == 0) {
+			return 0; 
+		}
+		else if (dislikeCount < 0) {
+			return 0;
+		}
+		
+		return dislikeCount;
 	}
 }
