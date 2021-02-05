@@ -59,38 +59,5 @@ public class ArticleService {
 		return articleDao.increaseCount(boardId, id); 
 	}
 
-	public Like getLikedArticle(int memberId, int id) {
-		return articleDao.getLikedArticle(memberId, id);
-	}
-
-	public Like getDislikedArticle(int memberId, int id) {
-		return articleDao.getDislikedArticle(memberId, id);
-	}
-
 	
-	public Object doLike(int memberId, int id) {
-		return articleDao.doLike(memberId,id);
-	}
-
-	public int getLikeCount(int id) {
-		return articleDao.getLikeCount(id); 
-	}
-
-	public Object doCanclelike(int memberId, int id) {
-		return articleDao.doCanclelike(memberId,id);
-	}
-
-	public Object doCancleDislike(int memberId, int id) {
-		return articleDao.doCancleDislike(memberId, id);
-		
-	}
-
-	public Object doDislike(int memberId, int id) {
-		return articleDao.doDislike(memberId,id);
-	}
-
-	public int getDislikeCount(int id) {
-		return articleDao.getDislikeCount(id); 
-	}
-
 }

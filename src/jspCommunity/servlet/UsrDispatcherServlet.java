@@ -1,20 +1,14 @@
 package jspCommunity.servlet;
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import jspCommunity.container.Container;
-import jspCommunity.controller.usr.AdmMemberController;
 import jspCommunity.controller.usr.UsrArticleController;
 import jspCommunity.controller.usr.UsrHomeController;
+import jspCommunity.controller.usr.UsrLikeController;
 import jspCommunity.controller.usr.UsrMemberController;
-import jspCommunity.mysqlUtil.MysqlUtil;
 
 /**
  * Servlet implementation class ArticleListServlet
@@ -54,13 +48,21 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 				jspPath = articleController.doModify(req, resp);
 			} else if (actionMethodsName.equals("doDelete")) {
 				jspPath = articleController.doDelete(req, resp);
-			} else if (actionMethodsName.equals("doLike")) {
-				jspPath = articleController.doLike(req, resp);
-			} else if (actionMethodsName.equals("doDislike")) {
-				jspPath = articleController.doDislike(req, resp);
 			}
+		}
 
-		} else if (controllerName.equals("member")) {
+		else if (controllerName.equals("like")) {
+			UsrLikeController likeController = Container.likeController;
+			if (actionMethodsName.equals("doLike")) {
+				jspPath = likeController.doLike(req, resp);
+			} else if (actionMethodsName.equals("doDislike")) {
+				jspPath = likeController.doDislike(req, resp);
+			}
+		}
+
+		
+		
+		else if (controllerName.equals("member")) {
 			UsrMemberController memberController = Container.memberController;
 
 			if (actionMethodsName.equals("join")) {
@@ -89,7 +91,7 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 				jspPath = memberController.doModify(req, resp);
 			} else if (actionMethodsName.equals("getLoginIdDup")) {
 				jspPath = memberController.getLoginIdDup(req, resp);
-			} 
+			}
 		}
 
 		return jspPath;

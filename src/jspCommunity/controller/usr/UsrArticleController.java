@@ -12,16 +12,18 @@ import jspCommunity.dto.Article;
 import jspCommunity.dto.Board;
 import jspCommunity.dto.Like;
 import jspCommunity.dto.Member;
-import jspCommunity.dto.ResultData;
 import jspCommunity.service.ArticleService;
+import jspCommunity.service.LikeService;
 import jspCommunity.service.MemberService;
 import jspCommunity.util.Util;
 
 public class UsrArticleController extends Controller {
 	private ArticleService articleService;
+	private LikeService likeService;
 
 	public UsrArticleController() {
 		articleService = Container.articleService;
+		likeService = Container.likeService;
 	}
 
 	public String showList(HttpServletRequest req, HttpServletResponse resp) {
@@ -100,10 +102,35 @@ public class UsrArticleController extends Controller {
 		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
 		Board board = articleService.getBoard(boardId);
 
-		Article article = articleService.getArticle(id);
-		int like = articleService.getLikeCount(id);
-		int dislike = articleService.getDislikeCount(id);
+		Article article = articleService.getArticle(id);	
+		int like = likeService.getLikeCount(id);
+		int dislike = likeService.getDislikeCount(id);
 
+		HttpSession session = req.getSession();
+		boolean liked = false;
+		boolean disliked = false;
+		
+		if( session.getAttribute("loginedMemberId") != null) {
+			int memberId = (int) session.getAttribute("loginedMemberId");
+
+			Like likedArticle = likeService.getLikedArticle(memberId, boardId);
+
+			if (likedArticle != null) {
+				liked = true;
+				req.setAttribute("liked", liked);
+			}
+
+			Like DislikedArticle = likeService.getDislikedArticle(memberId, boardId);
+
+
+			if (DislikedArticle != null) {
+				disliked = true;
+				req.setAttribute("disliked", disliked);
+			}
+
+		}
+		
+		
 		if (article == null) {
 			return msgAndBack(req, id + "번 게시물은 존재하지 않습니다.");
 		}
@@ -116,45 +143,10 @@ public class UsrArticleController extends Controller {
 		req.setAttribute("board", board);
 		req.setAttribute("like", like);
 		req.setAttribute("dislike", dislike);
-
-		return "/usr/article/detail";
-	}
-
-	public String doLike(HttpServletRequest req, HttpServletResponse resp) {
-
-		int id = Util.getAsInt(req.getParameter("id"), 0);
-		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
-		int memberId = (int) req.getAttribute("loginedMemberId");
-
-		Like likedArticle = articleService.getLikedArticle(memberId, id);
-
-		if (likedArticle != null) {
-			articleService.doCanclelike(memberId, id);
-			return msgAndReplace(req, "좋아요를 취소합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
-		} else {
-			articleService.doLike(memberId, id);
-			return msgAndReplace(req, "이 게시글을 좋아합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
-		}
-
-	}
-
-	public String doDislike(HttpServletRequest req, HttpServletResponse resp) {
+		req.setAttribute("liked", liked);
+		req.setAttribute("disliked", disliked);
 		
-		int id = Util.getAsInt(req.getParameter("id"), 0);
-		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
-		int memberId = (int) req.getAttribute("loginedMemberId");
-
-		Like dislikedArticle = articleService.getDislikedArticle(memberId, id);
-
-		if (dislikedArticle != null) {
-			articleService.doCancleDislike(memberId, id);
-			return msgAndReplace(req, "싫어요를 취소합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
-		} else {
-			articleService.doDislike(memberId, id);
-			return msgAndReplace(req, "이 게시글을 싫어합니다", String.format("detail?id=%d&boardId=%d", id, boardId));
-		}
-
-
+		return "/usr/article/detail";
 	}
 
 	public String showWrite(HttpServletRequest req, HttpServletResponse resp) {

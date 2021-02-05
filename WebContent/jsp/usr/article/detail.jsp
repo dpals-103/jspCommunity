@@ -31,26 +31,22 @@
 		<hr>
 	</div>
 	
-	<script>
-		function callDoLike(el) {
-
-			const id = ${article.id}; 
-			
-			$.post(
-					"doLike?id=${article.id}", 
-					
-			function(data) {
-				if (data.msg) {
-					alert(data.msg);
-				}
-			}, "json");
-		}
-	</script>
 	
-	<div>
-		<a href="doLike?boardId=?${board.id}memberId=${loginedMemberId}&id=${article.id}">좋아요 ${like}</a>
+	<div>		
+		<c:if test="${liked==false}">
+		<a href="../like/doLike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="far fa-heart"></i>${like}</a>
+		</c:if>
+		<c:if test="${liked}">
+		<a href="../like/doLike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="fas fa-heart"></i>${like}</a>
+		</c:if>
 		<span></span>
-		<a href="doDislike?boardId=?${board.id}memberId=${loginedMemberId}&id=${article.id}">싫어요 ${dislike}</a>
+		<c:if test="${disliked == false}">
+		<a href="../like/doDislike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="far fa-thumbs-down"></i>${dislike}</a>
+		</c:if>
+		<c:if test="${disliked}">
+		<a href="../like/doDislike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="fas fa-thumbs-down"></i>${dislike}</a>
+		</c:if>
+		
 	</div>
 	
 	
