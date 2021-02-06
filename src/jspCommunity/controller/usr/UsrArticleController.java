@@ -101,39 +101,18 @@ public class UsrArticleController extends Controller {
 		int id = Util.getAsInt(req.getParameter("id"), 0);
 		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
 		Board board = articleService.getBoard(boardId);
+		
+		Article article = articleService.getArticle(id);
 
-		Article article = articleService.getArticle(id);	
 		int like = likeService.getLikeCount(id);
 		int dislike = likeService.getDislikeCount(id);
 
-		HttpSession session = req.getSession();
-		boolean liked = false;
-		boolean disliked = false;
-		
-		if( session.getAttribute("loginedMemberId") != null) {
-			int memberId = (int) session.getAttribute("loginedMemberId");
 
-			Like likedArticle = likeService.getLikedArticle(memberId, boardId);
-
-			if (likedArticle != null) {
-				liked = true;
-				req.setAttribute("liked", liked);
-			}
-
-			Like DislikedArticle = likeService.getDislikedArticle(memberId, boardId);
-
-
-			if (DislikedArticle != null) {
-				disliked = true;
-				req.setAttribute("disliked", disliked);
-			}
-
-		}
-		
-		
 		if (article == null) {
 			return msgAndBack(req, id + "번 게시물은 존재하지 않습니다.");
 		}
+		
+
 
 		/* 조회수증가 */
 		articleService.increaseCount(boardId, id);
@@ -142,10 +121,10 @@ public class UsrArticleController extends Controller {
 		req.setAttribute("boardId", boardId);
 		req.setAttribute("board", board);
 		req.setAttribute("like", like);
-		req.setAttribute("dislike", dislike);
-		req.setAttribute("liked", liked);
-		req.setAttribute("disliked", disliked);
+		req.setAttribute("dislike", dislike);	
 		
+		
+
 		return "/usr/article/detail";
 	}
 

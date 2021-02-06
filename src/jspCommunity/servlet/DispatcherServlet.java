@@ -1,15 +1,12 @@
 package jspCommunity.servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +15,9 @@ import javax.servlet.http.HttpSession;
 
 import jspCommunity.container.Container;
 import jspCommunity.dto.Board;
+import jspCommunity.dto.Like;
 import jspCommunity.dto.Member;
 import jspCommunity.mysqlUtil.MysqlUtil;
-import jspCommunity.service.ArticleService;
 import jspCommunity.util.Util;
 
 public abstract class DispatcherServlet extends HttpServlet {
@@ -37,8 +34,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 	}
 
 	public void run(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		
+
 		Map<String, Object> doBeforeActionRs = doBeforeAction(req, resp);
 
 		if (doBeforeActionRs == null) {
@@ -60,8 +56,6 @@ public abstract class DispatcherServlet extends HttpServlet {
 	private Map<String, Object> doBeforeAction(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-	
-		
 		resp.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html; charset=UTF-8");
 
@@ -75,7 +69,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 		MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
 
-		//MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+		// MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
 
 		String controllerTypeName = requestUriBits[2]; // usr
 		String controllerName = requestUriBits[3]; // article
@@ -88,30 +82,52 @@ public abstract class DispatcherServlet extends HttpServlet {
 		int loginedMemberId = 0;
 		Member loginedMember = null;
 		boolean isTempPassword = false;
-
+		boolean liked = false;
+		boolean disliked = false;
+		
+		int id = Util.getAsInt(req.getParameter("id"), 0);
 		HttpSession session = req.getSession();
 
 		if (session.getAttribute("loginedMemberId") != null) {
+			
 			isLogined = true;
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = Container.memberService.getMember(loginedMemberId);
 			isTempPassword = Container.memberService.getIsUsingTempPassword(loginedMemberId);
+		}
+		
+		if ((int)session.getAttribute("loginedMemberId") > 0) {
+			
+			System.out.println(loginedMemberId);
+			
+			Like likedArticle = Container.likeService.getLikedArticle(loginedMemberId, id);
+			Like DislikedArticle = Container.likeService.getDislikedArticle(loginedMemberId, id);
+			
+			if (likedArticle != null) {
+				liked = true;
+			}
+
+			if (DislikedArticle != null) {
+				disliked = true;
+			}
 		}
 
 		req.setAttribute("isLogined", isLogined);
 		req.setAttribute("loginedMemberId", loginedMemberId);
 		req.setAttribute("loginedMember", loginedMember);
 		req.setAttribute("isTempPassword", isTempPassword);
+		req.setAttribute("liked", liked);
+		req.setAttribute("disliked", disliked);
+		
 
-		
-		String currentUrl = req.getRequestURI(); 
-		
+		String currentUrl = req.getRequestURI();
+
 		if (req.getQueryString() != null) {
-			currentUrl += "?" + req.getQueryString(); 
+			currentUrl += "?" + req.getQueryString();
 		}
-		
+
 		String encodedCurrentUrl = Util.getUrlEcoded(currentUrl);
-		
+
 		req.setAttribute("currentUrl", currentUrl);
 		req.setAttribute("encodedCurrentUrl", encodedCurrentUrl);
 		// 데이터 추가 인터셉터 끝
@@ -129,8 +145,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 		needToLogin.add("/usr/article/modify");
 		needToLogin.add("/usr/article/doModift");
 		needToLogin.add("/usr/article/doDelete");
-		needToLogin.add("/usr/article/doLike");
-		needToLogin.add("/usr/article/doDisLike");
+		needToLogin.add("/usr/like/doLike");
+		needToLogin.add("/usr/like/doDisLike");
 
 		if (needToLogin.contains(actionUrl)) {
 

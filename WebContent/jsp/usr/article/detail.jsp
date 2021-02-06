@@ -33,19 +33,33 @@
 	
 	
 	<div>		
-		<c:if test="${liked==false}">
-		<a href="../like/doLike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="far fa-heart"></i>${like}</a>
+		<a href="../like/doLike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}">
+		
+		<c:if test="${liked == false}">
+		<i class="far fa-heart"></i>${like}
 		</c:if>
+		
 		<c:if test="${liked}">
-		<a href="../like/doLike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="fas fa-heart"></i>${like}</a>
+		<i class="fas fa-heart"></i>${like}
 		</c:if>
+		
+		</a>
+		
 		<span></span>
+		
+	
+		<a href="../like/doDislike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}">
+		
 		<c:if test="${disliked == false}">
-		<a href="../like/doDislike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="far fa-thumbs-down"></i>${dislike}</a>
+		<i class="far fa-thumbs-down"></i>${dislike}
 		</c:if>
+		
 		<c:if test="${disliked}">
-		<a href="../like/doDislike?boardId=${board.id}&memberId=${loginedMemberId}&id=${article.id}"><i class="fas fa-thumbs-down"></i>${dislike}</a>
+		<i class="fas fa-thumbs-down"></i>${dislike}
 		</c:if>
+		
+		</a>
+
 		
 	</div>
 	

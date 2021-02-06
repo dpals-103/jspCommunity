@@ -18,12 +18,12 @@ public class LikeDao {
 		sql.append("where articleId = ?", id);
 		sql.append("and memberId= ?", memberId);
 		sql.append("and relTypeCode='like'");
-		sql.append("and `point`= 1");
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
 
 		if (map.isEmpty()) {
 			return null;
+			
 		}
 
 		return new Like(map);
@@ -38,8 +38,7 @@ public class LikeDao {
 		sql.append("from `like`");
 		sql.append("where articleId = ?", id);
 		sql.append("and memberId= ?", memberId);
-		sql.append("and relTypeCode='like'");
-		sql.append("and `point` = -1");
+		sql.append("and relTypeCode='dislike'");
 
 		Map<String, Object> map = MysqlUtil.selectRow(sql);
 
@@ -109,7 +108,7 @@ public class LikeDao {
 		sql.append("delete from `like`");
 		sql.append("where articleId = ?", id);
 		sql.append("and memberId= ?", memberId);
-		sql.append("and `point` = 1");
+		sql.append("and relTypeCode='like'");
 
 		return MysqlUtil.delete(sql);
 		
@@ -121,8 +120,7 @@ public class LikeDao {
 		sql.append("delete from `like`");
 		sql.append("where articleId = ?", id);
 		sql.append("and memberId= ?", memberId);
-		sql.append(",relTypeCode='dislike'");
-		sql.append("and `point` = 1");
+		sql.append("and relTypeCode='dislike'");
 
 		return MysqlUtil.delete(sql);
 	}
