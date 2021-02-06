@@ -97,8 +97,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 		}
 		
 		if ((int)session.getAttribute("loginedMemberId") > 0) {
-			
-			System.out.println(loginedMemberId);
+		
 			
 			Like likedArticle = Container.likeService.getLikedArticle(loginedMemberId, id);
 			Like DislikedArticle = Container.likeService.getDislikedArticle(loginedMemberId, id);

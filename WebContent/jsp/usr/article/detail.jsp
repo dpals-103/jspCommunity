@@ -15,6 +15,13 @@
 
 	<h1>${board.category} 게시판</h1>
 	<h1>${article.id}번글 상세보기</h1>
+	
+	<a href="list?boardId=${article.boardId}">리스트로 돌아가기</a>
+	<c:if test="${sessionScope.loginedMemberId == article.memberId }">
+		<a href="modify?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">수정하기</a>
+		<a href="/jspCommunity/usr/article/doDelete?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">삭제하기</a>
+	</c:if>
+	
 
 	<div>
 		번호 :
@@ -63,19 +70,54 @@
 		
 	</div>
 	
+	<script>
+		let DoReplyForm__submited = false; 
+
+		function DoReplyForm__submit (form){
+			if (DoReplyForm_submited){
+				alert('처리중입니다'); 
+				return; 		
+			}
+
+			if(form.body.value.length == 0){
+				alert('내용을 입력해주세요'); 
+				form.body.focus();
+
+				return; 
+			}
+
+			form.submit();
+			DoReplyForm__submited = true;
+
+		}
+	</script>
+	
+	
+	
+	<form action="../reply/doReply" methods="POST" onsubmit="DoReplyForm__submit(this); return false;">
+		<input type="hidden" name="id" value="${param.id}"/>
+		<input type="hidden" name="boardId" value="${param.boardId}"/>
+		
+		<h5>${loginedMember.nickName}</h5>
+		<textarea name="body" id="" cols="30" rows="10"></textarea>
+		<input type="submit" value="댓글"/>
+	</form>
 	
 	<div>
-		<a href="list?boardId=${article.boardId}">리스트로 돌아가기</a>
+		<c:forEach items="${replies}" var="reply" >
+			<hr/>
+			<div>${reply.extra__nickName}</div>
+			<div>${reply.body}</div>
+			
+			<c:if test="${sessionScope.loginedMemberId == reply.memberId }">
+				<a href="../reply/modify?id=${param.id}&boardId=${param.boardId}&replyId=${reply.id}&&memberId=${reply.memberId}">수정하기</a>
+				<a href="../reply/doDelete?id=${param.id}&boardId=${param.boardId}&replyId=${reply.id}&&memberId=${reply.memberId}">삭제하기</a>
+			</c:if>
+			<hr/>
+		</c:forEach>	
 	</div>
-
-	<c:if test="${sessionScope.loginedMemberId == article.memberId }">
-		<div>
-			<a href="modify?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">수정하기</a>
-		</div>
-		<div>
-			<a href="/jspCommunity/usr/article/doDelete?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">삭제하기</a>
-		</div>
-	</c:if>
 	
+	
+
 	
 <%@ include file="../../part/foot.jspf" %>

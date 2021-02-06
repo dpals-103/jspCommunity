@@ -12,9 +12,11 @@ import jspCommunity.dto.Article;
 import jspCommunity.dto.Board;
 import jspCommunity.dto.Like;
 import jspCommunity.dto.Member;
+import jspCommunity.dto.Reply;
 import jspCommunity.service.ArticleService;
 import jspCommunity.service.LikeService;
 import jspCommunity.service.MemberService;
+import jspCommunity.service.ReplyService;
 import jspCommunity.util.Util;
 
 public class UsrArticleController extends Controller {
@@ -112,19 +114,20 @@ public class UsrArticleController extends Controller {
 			return msgAndBack(req, id + "번 게시물은 존재하지 않습니다.");
 		}
 		
-
-
 		/* 조회수증가 */
 		articleService.increaseCount(boardId, id);
+		
+		
+		/*댓글리스트*/
+		List<Reply> replies = ReplyService.getReplies(id);
 
+		req.setAttribute("replies", replies);
 		req.setAttribute("article", article);
 		req.setAttribute("boardId", boardId);
 		req.setAttribute("board", board);
 		req.setAttribute("like", like);
 		req.setAttribute("dislike", dislike);	
 		
-		
-
 		return "/usr/article/detail";
 	}
 
@@ -227,7 +230,9 @@ public class UsrArticleController extends Controller {
 
 	public String doDelete(HttpServletRequest req, HttpServletResponse resp) {
 
-		int memberId = Integer.parseInt(req.getParameter("memberId"));
+		HttpSession session = req.getSession();
+
+		int memberId =(int) session.getAttribute("loginedMemberId");
 		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
 		int id = Util.getAsInt(req.getParameter("id"), 0);
 

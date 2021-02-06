@@ -9,6 +9,7 @@ import jspCommunity.controller.usr.UsrArticleController;
 import jspCommunity.controller.usr.UsrHomeController;
 import jspCommunity.controller.usr.UsrLikeController;
 import jspCommunity.controller.usr.UsrMemberController;
+import jspCommunity.controller.usr.UsrReplyController;
 
 /**
  * Servlet implementation class ArticleListServlet
@@ -58,6 +59,16 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 			} else if (actionMethodsName.equals("doDislike")) {
 				jspPath = likeController.doDislike(req, resp);
 			}
+		}
+		
+		
+		else if (controllerName.equals("reply")) {
+			UsrReplyController replyController = Container.replyController;
+			if (actionMethodsName.equals("doReply")) {
+				jspPath = replyController.doReply(req, resp);
+			} else if (actionMethodsName.equals("doDelete")) {
+				jspPath = replyController.doDelete(req, resp);
+			} 
 		}
 
 		
