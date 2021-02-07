@@ -68,9 +68,24 @@ public abstract class DispatcherServlet extends HttpServlet {
 		}
 
 		MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
-
 		// MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
-
+	
+		String profilesActive = System.getProperty("spring.profiles.active"); 
+		
+		boolean isProductionMode = false;
+		
+		if (profilesActive != null && profilesActive.equals("production")) {
+			isProductionMode = true;
+		}
+		
+		if(isProductionMode) {
+			MysqlUtil.setDBInfo("127.0.0.1", "sbsstLocal", "sbs123414", "jspCommunity");
+		}
+		else {
+			MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+		}
+		
+		
 		String controllerTypeName = requestUriBits[2]; // usr
 		String controllerName = requestUriBits[3]; // article
 		String actionMethodsName = requestUriBits[4]; // write,modify...
@@ -86,6 +101,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 		boolean disliked = false;
 		
 		int id = Util.getAsInt(req.getParameter("id"), 0);
+		
 		HttpSession session = req.getSession();
 
 		if (session.getAttribute("loginedMemberId") != null) {
@@ -96,9 +112,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 			isTempPassword = Container.memberService.getIsUsingTempPassword(loginedMemberId);
 		}
 		
-		if ((int)session.getAttribute("loginedMemberId") > 0) {
-		
-			
+		if ((int)session.getAttribute("loginedMemberId") > 0) {	
 			Like likedArticle = Container.likeService.getLikedArticle(loginedMemberId, id);
 			Like DislikedArticle = Container.likeService.getDislikedArticle(loginedMemberId, id);
 			
