@@ -1,31 +1,31 @@
-drop database if exists jspCommunity;
-create database jspCommunity;
-use jspCommunity;
+DROP DATABASE IF EXISTS jspCommunity;
+CREATE DATABASE jspCommunity;
+USE jspCommunity;
 
 
-create table `member`(
- id int(10) unsigned primary key not null auto_increment, 
-    loginId char(50) not null unique, 
-    loginPw varchar(200) NOT NULL, 
+CREATE TABLE `member`(
+ id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+    loginId CHAR(50) NOT NULL UNIQUE, 
+    loginPw VARCHAR(200) NOT NULL, 
     `name` CHAR(50) NOT NULL,
     `nickName` CHAR(50) NOT NULL,
-    cellPhone char(20) not null,
-    `email` varchar(100) not null,
-    regDate datetime not null,
+    cellPhone CHAR(20) NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
+    regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
-    adminLevel tinyint(1) unsigned not null default 2 comment '0=관리자/1=로그인정지/2=신규회원/3=인증된회원/4=탈퇴' 
+    adminLevel TINYINT(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '0=관리자/1=로그인정지/2=신규회원/3=인증된회원/4=탈퇴' 
 );
 
 #회원 1 생성
-insert into `member`
-set loginId = "user1", 
+INSERT INTO `member`
+SET loginId = "user1", 
 loginPw = "user1",
 `name` = "김민수",
 `nickName` = "만수",
 cellPhone ='01012344567',
 `email` = "nature103@naver.com",
 updateDate = NOW(),
-regDate = now(); 
+regDate = NOW(); 
 
 #회원 2 생성
 INSERT INTO `member`
@@ -52,10 +52,10 @@ regDate = NOW();
 
 
 
-create table board(
+CREATE TABLE board(
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
     memberId INT(10) UNSIGNED NOT NULL DEFAULT '1',
-    category CHAR(10) NOT NULL unique,
+    category CHAR(10) NOT NULL UNIQUE,
     `code` CHAR(10) NOT NULL UNIQUE,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL
@@ -63,34 +63,34 @@ create table board(
 
 
 # 공지사항 게시판 생성 
-insert into board
-set 
+INSERT INTO board
+SET 
 category = "공지사항",
 `code` = "notice",
-regDate = now(),
-updateDate = now();
+regDate = NOW(),
+updateDate = NOW();
 
 # 방명록 게시판 생성 
-insert into board
-set 
+INSERT INTO board
+SET 
 category = "방명록",
 `code` = "guestBook",
-regDate = now(),
-updateDate = now();
+regDate = NOW(),
+updateDate = NOW();
 
 # 자유게시판 생성 
-insert into board
-set 
+INSERT INTO board
+SET 
 category = "자유",
 `code` = "free",
-regDate = now(),
-updateDate = now();
+regDate = NOW(),
+updateDate = NOW();
 
-create table article(
+CREATE TABLE article(
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
     boardId INT(10) UNSIGNED NOT NULL,   
     title CHAR(100) NOT NULL,
-    `body` longTEXT NOT NULL,
+    `body` LONGTEXT NOT NULL,
     memberId INT(10) UNSIGNED NOT NULL,
     `count` INT(10) UNSIGNED NOT NULL DEFAULT '0',
     regDate DATETIME NOT NULL,
@@ -100,12 +100,12 @@ create table article(
 
 
 # 게시글 생성 
-insert into article
-set  boardId = 1,
+INSERT INTO article
+SET  boardId = 1,
 title = '제목1',
 `body` = '내용1',
 memberId = 1,
-regDate = now(),
+regDate = NOW(),
 updateDate = NOW();
 
 
@@ -135,20 +135,20 @@ regDate = NOW(),
 updateDate = NOW();
 
 #비밀번호 암호화 
-update `member`
-set loginPw = SHA2(loginPw,256)  
-where id < 5;
+UPDATE `member`
+SET loginPw = SHA2(loginPw,256)  
+WHERE id < 5;
 
 
 #부가정보테이블
-create table attr(
-    id int(10) unsigned not null primary key auto_increment,
-    relTypecode char(20) not null,  #관련타입코드(member,article...)
-    relId int(10) unsigned not null,  #관련데이터번호
-    typeCode char(30) not null,      
-    type2Code char(30) not null, 
-    `value` text not null, 
-    regDate datetime not null, 
+CREATE TABLE attr(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    relTypecode CHAR(20) NOT NULL,  #관련타입코드(member,article...)
+    relId INT(10) UNSIGNED NOT NULL,  #관련데이터번호
+    typeCode CHAR(30) NOT NULL,      
+    type2Code CHAR(30) NOT NULL, 
+    `value` TEXT NOT NULL, 
+    regDate DATETIME NOT NULL, 
     updateDate DATETIME NOT NULL
 ); 
 
@@ -156,39 +156,41 @@ create table attr(
 # attr 유니크 인덱스 걸기 
 ## 중복변수 생성금지
 ## 변수찾는 속도 최적화 
-alter table `attr` add unique index (`relTypeCode`, `relId`, `typeCode`,`type2Code`);
+ALTER TABLE `attr` ADD UNIQUE INDEX (`relTypeCode`, `relId`, `typeCode`,`type2Code`);
 
 ## 특정 조건을 만족하는 회원 또는 게시물(기타 데이터)를 빠르게 찾기 위해서 
-alter table `attr` add index (`relTypeCode`, `typeCode`,`type2Code`);
+ALTER TABLE `attr` ADD INDEX (`relTypeCode`, `typeCode`,`type2Code`);
 
 # attr에 만료날짜 추가 
-alter table `attr` add column `expireDate` datetime null after `value`; 
+ALTER TABLE `attr` ADD COLUMN `expireDate` DATETIME NULL AFTER `value`; 
 
 
 #추천 테이블
-create table `like`(
+CREATE TABLE `like`(
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    articleId INT(10) UNSIGNED NOT NULL,   
+    relId INT(10) UNSIGNED NOT NULL,   
     memberId INT(10) UNSIGNED NOT NULL,
-    relTypeCode char(20) not null,
-    `point` smallint(1) unsigned not null default '0',
+    relTypeCode CHAR(20) NOT NULL,
+    `point` SMALLINT(1) UNSIGNED NOT NULL DEFAULT '0',
     regDate DATETIME NOT NULL
 ); 
 
 ALTER TABLE `jspCommunity`.`like` ADD INDEX (`relTypeCode`, `memberId`); 
 
 #댓글 테이블 
-create table reply (
+CREATE TABLE reply (
     id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    relTypeCode char(30) not null, 
-    relId int(10) unsigned not null,
-    memberId int(10) unsigned not null,
+    relTypeCode CHAR(30) NOT NULL, 
+    relId INT(10) UNSIGNED NOT NULL,
+    memberId INT(10) UNSIGNED NOT NULL,
     articleId INT(10) UNSIGNED NOT NULL,
-    `body` text not null,
+    `body` TEXT NOT NULL,
     regDate DATETIME NOT NULL,  
-    updateDate datetime not null  
+    updateDate DATETIME NOT NULL  
 );
     
 ALTER TABLE `jspCommunity`.`reply` ADD INDEX (`relTypeCode`, `relId`);
 
-    
+
+
+
