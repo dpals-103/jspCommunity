@@ -22,10 +22,12 @@ import jspCommunity.util.Util;
 public class UsrArticleController extends Controller {
 	private ArticleService articleService;
 	private LikeService likeService;
+	private ReplyService replyService;
 
 	public UsrArticleController() {
 		articleService = Container.articleService;
 		likeService = Container.likeService;
+		replyService = Container.replyService;
 	}
 
 	public String showList(HttpServletRequest req, HttpServletResponse resp) {
@@ -119,7 +121,10 @@ public class UsrArticleController extends Controller {
 		
 		
 		/*댓글리스트*/
-		List<Reply> replies = ReplyService.getReplies(id);
+		List<Reply> replies = replyService.getReplies(id);
+		int replyCount = replyService.getReplyCount(id); 
+		
+	
 
 		req.setAttribute("replies", replies);
 		req.setAttribute("article", article);
@@ -127,6 +132,7 @@ public class UsrArticleController extends Controller {
 		req.setAttribute("board", board);
 		req.setAttribute("like", like);
 		req.setAttribute("dislike", dislike);	
+		req.setAttribute("replyCount", replyCount);	
 		
 		return "/usr/article/detail";
 	}

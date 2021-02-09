@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import jspCommunity.App;
 import jspCommunity.container.Container;
 import jspCommunity.dto.Board;
 import jspCommunity.dto.Like;
@@ -62,36 +63,43 @@ public abstract class DispatcherServlet extends HttpServlet {
 		String requestUri = req.getRequestURI();
 		String[] requestUriBits = requestUri.split("/");
 
-		if (requestUri.length() < 5) {
+		int minBitsCount = 5; 
+		
+		
+		if (requestUri.length() < minBitsCount) {
 			resp.getWriter().append("올바른 요청이 아닙니다");
 			return null;
 		}
-
-		MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
-		// MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
-	
-		String profilesActive = System.getProperty("spring.profiles.active"); 
 		
-		boolean isProductionMode = false;
-		
-		if (profilesActive != null && profilesActive.equals("production")) {
-			isProductionMode = true;
-		}
-		
-		if(isProductionMode) {
+		if(App.isProductMode()) {
 			MysqlUtil.setDBInfo("127.0.0.1", "sbsstLocal", "sbs123414", "jspCommunity");
 		}
 		else {
-			MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+			//MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+			MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
+			MysqlUtil.setDevMode(true);
 		}
 		
+		int controllerTypeNameIndex = 2; 
+		int controllerNameIndex = 3; 
+		int actionMethodsNameIndex = 4; 
 		
-		String controllerTypeName = requestUriBits[2]; // usr
-		String controllerName = requestUriBits[3]; // article
-		String actionMethodsName = requestUriBits[4]; // write,modify...
+		if (App.isProductMode()) {
+			minBitsCount = 4; 
+			
+			controllerTypeNameIndex = 1; 
+			controllerNameIndex = 2; 
+			actionMethodsNameIndex = 3; 
+			
+		}
+		
+		String controllerTypeName = requestUriBits[controllerTypeNameIndex]; // usr
+		String controllerName = requestUriBits[controllerNameIndex]; // article
+		String actionMethodsName = requestUriBits[actionMethodsNameIndex]; // write,modify...
 
 		String actionUrl = "/" + controllerTypeName + "/" + controllerName + "/" + actionMethodsName;
-
+	
+		
 		// 데이터 추가 인터셉터 시작
 		boolean isLogined = false;
 		int loginedMemberId = 0;
@@ -99,8 +107,11 @@ public abstract class DispatcherServlet extends HttpServlet {
 		boolean isTempPassword = false;
 		boolean liked = false;
 		boolean disliked = false;
+		boolean likedReply = false;
+		boolean dislikedReply = false;
 		
 		int id = Util.getAsInt(req.getParameter("id"), 0);
+		int replyId = Util.getAsInt(req.getParameter("replyId"), 0);
 		
 		HttpSession session = req.getSession();
 
@@ -110,27 +121,31 @@ public abstract class DispatcherServlet extends HttpServlet {
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = Container.memberService.getMember(loginedMemberId);
 			isTempPassword = Container.memberService.getIsUsingTempPassword(loginedMemberId);
+			
+			if ((int)session.getAttribute("loginedMemberId") > 0) {	
+				Like likedArticle = Container.likeService.getLikedArticle(loginedMemberId, id);
+				Like DislikedArticle = Container.likeService.getDislikedArticle(loginedMemberId, id);
+				
+				if (likedArticle != null) {
+					liked = true;
+				}
+
+				if (DislikedArticle != null) {
+					disliked = true;
+				}
+				
+			}
 		}
 		
-		if ((int)session.getAttribute("loginedMemberId") > 0) {	
-			Like likedArticle = Container.likeService.getLikedArticle(loginedMemberId, id);
-			Like DislikedArticle = Container.likeService.getDislikedArticle(loginedMemberId, id);
-			
-			if (likedArticle != null) {
-				liked = true;
-			}
-
-			if (DislikedArticle != null) {
-				disliked = true;
-			}
-		}
-
 		req.setAttribute("isLogined", isLogined);
 		req.setAttribute("loginedMemberId", loginedMemberId);
 		req.setAttribute("loginedMember", loginedMember);
 		req.setAttribute("isTempPassword", isTempPassword);
 		req.setAttribute("liked", liked);
 		req.setAttribute("disliked", disliked);
+		req.setAttribute("likedReply", likedReply);
+		req.setAttribute("dislikedReply", dislikedReply);
+		
 		
 
 		String currentUrl = req.getRequestURI();
@@ -160,14 +175,18 @@ public abstract class DispatcherServlet extends HttpServlet {
 		needToLogin.add("/usr/article/doDelete");
 		needToLogin.add("/usr/like/doLike");
 		needToLogin.add("/usr/like/doDisLike");
+		needToLogin.add("/usr/reply/doReply");
+		needToLogin.add("/usr/reply/doDelete");
+		needToLogin.add("/usr/reply/doLike");
+		needToLogin.add("/usr/reply/doDisLike");
 
 		if (needToLogin.contains(actionUrl)) {
 
-			if ((boolean) req.getAttribute("isLogined") == false) {
+			if ((int) req.getAttribute("loginedMemberId") == 0) {
 				req.setAttribute("alertMsg", "로그인 후 이용해주세요");
 				req.setAttribute("replaceUrl", "../member/login?afterLoginUrl=" + encodedCurrentUrl);
 
-				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher(getJsonDirPath() + "/common/redirect.jsp");
 				rd.forward(req, resp);
 			}
 		}
@@ -184,7 +203,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 				req.setAttribute("alertMsg", "로그아웃 후 이용해주세요");
 				req.setAttribute("replaceUrl", "../home/main");
 
-				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher(getJsonDirPath() + "/common/redirect.jsp");
 				rd.forward(req, resp);
 			}
 		}
@@ -202,6 +221,10 @@ public abstract class DispatcherServlet extends HttpServlet {
 		return rs;
 	}
 
+	private String getJsonDirPath() {
+		return "/WEB-INF/jsp";
+	}
+
 	// 추상메서드
 	protected abstract String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName,
 			String actionMethodsName);
@@ -212,7 +235,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 		MysqlUtil.closeConnection();
 
-		RequestDispatcher rd = req.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
+		RequestDispatcher rd = req.getRequestDispatcher(getJsonDirPath() + "/" + jspPath + ".jsp");
 		rd.forward(req, resp);
 
 	}

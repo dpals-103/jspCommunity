@@ -19,7 +19,7 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 
 		sql.append("select A.*");
-		sql.append(",M.name as extra__writer");
+		sql.append(",M.nickName as extra__writer");
 		sql.append(",B.category as extra__category");
 		sql.append("from article as A");
 		sql.append("inner join `member` as M");
@@ -47,7 +47,7 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 
 		sql.append("select A.*");
-		sql.append(",M.name as extra__writer");
+		sql.append(",M.nickName as extra__writer");
 		sql.append(",B.category as extra__category");
 		sql.append(",B.code as extra__boardCode");
 		sql.append("from article as A");
@@ -197,7 +197,7 @@ public class ArticleDao {
 		SecSql sql = new SecSql();
 
 		sql.append("select A.*");
-		sql.append(",M.name as extra__writer");
+		sql.append(",M.nickName as extra__writer");
 		sql.append(",B.category as extra__category");
 		sql.append("from article as A");
 		sql.append("inner join `member` as M");

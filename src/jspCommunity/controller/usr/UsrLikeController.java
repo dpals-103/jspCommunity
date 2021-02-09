@@ -22,9 +22,11 @@ public class UsrLikeController extends Controller {
 		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
 		int memberId = (int) req.getAttribute("loginedMemberId");
 
+		/*
 		if (memberId == 0) {
 			return msgAndReplace(req, "로그인 후 이용해주세요", "../member/login");
 		}
+		*/
 
 		Like likedArticle = likeService.getLikedArticle(memberId, id);
 		Like dislikedArticle = likeService.getDislikedArticle(memberId, id);
@@ -53,10 +55,12 @@ public class UsrLikeController extends Controller {
 		int boardId = Util.getAsInt(req.getParameter("boardId"), 0);
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		
+		/*
 		if (memberId == 0) {
 			return msgAndReplace(req, "로그인 후 이용해주세요", "../member/login");
 		}
-
+		*/
+		
 		Like dislikedArticle = likeService.getDislikedArticle(memberId, id);
 		
 		if (dislikedArticle != null) {

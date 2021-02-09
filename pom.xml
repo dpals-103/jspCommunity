@@ -10,9 +10,7 @@
 	<properties>
 		<jackson.version>2.12.1</jackson.version>
 	</properties>
-
-
-
+	
 	<dependencies>
 
         <!-- 메일발송 관련 -->
@@ -61,6 +59,16 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
+		   <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <server>ourrecord__manager_text</server>
+                    <url>http://ourrecord.ljeya.org:8080/manager/text</url>
+                    <path>/</path>
+                </configuration>
+            </plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
@@ -73,6 +81,7 @@
 				<version>3.2.3</version>
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 		</plugins>

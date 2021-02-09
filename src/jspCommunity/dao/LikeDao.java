@@ -15,7 +15,7 @@ public class LikeDao {
 
 		sql.append("select *");
 		sql.append("from `like`");
-		sql.append("where articleId = ?", id);
+		sql.append("where relId = ?", id);
 		sql.append("and memberId= ?", memberId);
 		sql.append("and relTypeCode='like'");
 
@@ -36,7 +36,7 @@ public class LikeDao {
 
 		sql.append("select *");
 		sql.append("from `like`");
-		sql.append("where articleId = ?", id);
+		sql.append("where relId = ?", id);
 		sql.append("and memberId= ?", memberId);
 		sql.append("and relTypeCode='dislike'");
 
@@ -55,7 +55,7 @@ public class LikeDao {
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO `like`");
-		sql.append("set articleId = ?", id);
+		sql.append("set relId = ?", id);
 		sql.append(",memberId= ?", memberId);
 		sql.append(",relTypeCode='like'");
 		sql.append(",`point` = 1");
@@ -70,7 +70,7 @@ public class LikeDao {
 
 		sql.append("select sum(point)");
 		sql.append("from `like`");
-		sql.append("where articleId = ?", id);
+		sql.append("where relId = ?", id);
 		sql.append("and relTypeCode='like' ");
 		sql.append("and point=1");
 
@@ -84,7 +84,7 @@ public class LikeDao {
 
 		count.append("select sum(point)");
 		count.append("from `like`");
-		count.append("where articleId = ?", id);
+		count.append("where relId = ?", id);
 		count.append("and relTypeCode= 'like'");
 		count.append("and `point`=1");
 
@@ -106,7 +106,7 @@ public class LikeDao {
 		SecSql sql = new SecSql();
 
 		sql.append("delete from `like`");
-		sql.append("where articleId = ?", id);
+		sql.append("where relId = ?", id);
 		sql.append("and memberId= ?", memberId);
 		sql.append("and relTypeCode='like'");
 
@@ -118,7 +118,7 @@ public class LikeDao {
 		SecSql sql = new SecSql();
 
 		sql.append("delete from `like`");
-		sql.append("where articleId = ?", id);
+		sql.append("where relId = ?", id);
 		sql.append("and memberId= ?", memberId);
 		sql.append("and relTypeCode='dislike'");
 
@@ -129,7 +129,7 @@ public class LikeDao {
 		SecSql sql = new SecSql();
 
 		sql.append("INSERT INTO `like`");
-		sql.append("set articleId = ?", id);
+		sql.append("set relId = ?", id);
 		sql.append(",memberId= ?", memberId);
 		sql.append(",relTypeCode='dislike'");
 		sql.append(",`point` = 1");
@@ -144,7 +144,7 @@ public class LikeDao {
 
 		sql.append("select sum(point)");
 		sql.append("from `like`");
-		sql.append("where articleId = ?", id);
+		sql.append("where relId = ?", id);
 		sql.append("and relTypeCode='dislike' ");
 		sql.append("and point=1");
 
@@ -158,7 +158,7 @@ public class LikeDao {
 
 		count.append("select sum(point)");
 		count.append("from `like`");
-		count.append("where articleId = ?", id);
+		count.append("where relId = ?", id);
 		count.append("and relTypeCode= 'dislike'");
 		count.append("and `point`=1");
 
