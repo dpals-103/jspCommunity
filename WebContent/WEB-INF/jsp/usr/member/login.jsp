@@ -149,7 +149,7 @@ section{
 					DoLoginForm__submited = true;
 				}
 			</script>
-			<form action="/jspCommunity/usr/member/doLogin" methods="POST"
+			<form action="doLogin" methods="POST"
 				onsubmit="DoLoginForm__submit(this); return false"
 				class="signin-form">
 				

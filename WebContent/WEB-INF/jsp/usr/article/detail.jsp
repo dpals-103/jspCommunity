@@ -271,8 +271,10 @@
           </nav>
           
           <nav class="detail-nav_mobile flex visible-sm-down">
-            <a href="">글 수정</a>
-            <a href="">글 삭제</a>
+          <c:if test="${sessionScope.loginedMemberId == article.memberId }">
+            <a href="modify?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">글 수정</a>
+            <a href="/jspCommunity/usr/article/doDelete?boardId=${param.boardId}&id=${param.id}&memberId=${article.memberId}">글 삭제</a>
+          </c:if>
             <a href="">이전글</a> 
             <a href="">리스트로 돌아가기</a>
             <a href="">다음글</a> 

@@ -63,43 +63,41 @@ public abstract class DispatcherServlet extends HttpServlet {
 		String requestUri = req.getRequestURI();
 		String[] requestUriBits = requestUri.split("/");
 
-		int minBitsCount = 5; 
+		int minBitsCount = 5;
+		int controllerTypeNameIndex = 2;
+		int controllerNameIndex = 3;
+		int actionMethodsNameIndex = 4;
 		
+		if (App.isProductMode()) {
+			minBitsCount = 4;
+			
+			controllerTypeNameIndex = 1;
+			controllerNameIndex = 2;
+			actionMethodsNameIndex = 3;
+		}
+	
 		
 		if (requestUri.length() < minBitsCount) {
 			resp.getWriter().append("올바른 요청이 아닙니다");
 			return null;
 		}
-		
-		if(App.isProductMode()) {
+
+		if (App.isProductMode()) {
 			MysqlUtil.setDBInfo("127.0.0.1", "sbsstLocal", "sbs123414", "jspCommunity");
-		}
-		else {
-			//MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
-			MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
+		} else {
+			MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "jspCommunity");
+			//MysqlUtil.setDBInfo("127.0.0.1", "dpals103", "dlgywn0168", "jspCommunity");
 			MysqlUtil.setDevMode(true);
 		}
-		
-		int controllerTypeNameIndex = 2; 
-		int controllerNameIndex = 3; 
-		int actionMethodsNameIndex = 4; 
-		
-		if (App.isProductMode()) {
-			minBitsCount = 4; 
-			
-			controllerTypeNameIndex = 1; 
-			controllerNameIndex = 2; 
-			actionMethodsNameIndex = 3; 
-			
-		}
-		
+
+	
+
 		String controllerTypeName = requestUriBits[controllerTypeNameIndex]; // usr
 		String controllerName = requestUriBits[controllerNameIndex]; // article
 		String actionMethodsName = requestUriBits[actionMethodsNameIndex]; // write,modify...
 
 		String actionUrl = "/" + controllerTypeName + "/" + controllerName + "/" + actionMethodsName;
-	
-		
+
 		// 데이터 추가 인터셉터 시작
 		boolean isLogined = false;
 		int loginedMemberId = 0;
@@ -109,23 +107,23 @@ public abstract class DispatcherServlet extends HttpServlet {
 		boolean disliked = false;
 		boolean likedReply = false;
 		boolean dislikedReply = false;
-		
+
 		int id = Util.getAsInt(req.getParameter("id"), 0);
 		int replyId = Util.getAsInt(req.getParameter("replyId"), 0);
-		
+
 		HttpSession session = req.getSession();
 
 		if (session.getAttribute("loginedMemberId") != null) {
-			
+
 			isLogined = true;
 			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = Container.memberService.getMember(loginedMemberId);
 			isTempPassword = Container.memberService.getIsUsingTempPassword(loginedMemberId);
-			
-			if ((int)session.getAttribute("loginedMemberId") > 0) {	
+
+			if ((int) session.getAttribute("loginedMemberId") > 0) {
 				Like likedArticle = Container.likeService.getLikedArticle(loginedMemberId, id);
 				Like DislikedArticle = Container.likeService.getDislikedArticle(loginedMemberId, id);
-				
+
 				if (likedArticle != null) {
 					liked = true;
 				}
@@ -133,10 +131,10 @@ public abstract class DispatcherServlet extends HttpServlet {
 				if (DislikedArticle != null) {
 					disliked = true;
 				}
-				
+
 			}
 		}
-		
+
 		req.setAttribute("isLogined", isLogined);
 		req.setAttribute("loginedMemberId", loginedMemberId);
 		req.setAttribute("loginedMember", loginedMember);
@@ -145,8 +143,6 @@ public abstract class DispatcherServlet extends HttpServlet {
 		req.setAttribute("disliked", disliked);
 		req.setAttribute("likedReply", likedReply);
 		req.setAttribute("dislikedReply", dislikedReply);
-		
-		
 
 		String currentUrl = req.getRequestURI();
 
@@ -171,7 +167,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 		needToLogin.add("/usr/article/write");
 		needToLogin.add("/usr/article/doWrite");
 		needToLogin.add("/usr/article/modify");
-		needToLogin.add("/usr/article/doModift");
+		needToLogin.add("/usr/article/doModify");
 		needToLogin.add("/usr/article/doDelete");
 		needToLogin.add("/usr/like/doLike");
 		needToLogin.add("/usr/like/doDisLike");

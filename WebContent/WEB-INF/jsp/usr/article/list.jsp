@@ -164,7 +164,7 @@ section {
 
 		<div class="con flex">
 			<div class="list-title flex">
-				<span><i class="fas fa-pencil-alt"></i></span> <span>${board.category}</span>
+				<span>${board.category}</span>
 			</div>
 
 			<div class="list-search flex">

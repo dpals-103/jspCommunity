@@ -34,7 +34,7 @@ public class App {
 	}
 
 	public static String getLoginUrl() {
-		return getAppUrl() + "usr/member/login";
+		return getAppUrl() + "/usr/member/login";
 	}
 	
 	private static String getAppUrl() {
